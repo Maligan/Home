@@ -15,7 +15,7 @@ set nowrap
 " Hotkeys
 let mapleader=","
 nmap <silent> <leader>rc :e $MYVIMRC<CR> " Quick accsess to .vimrc file
-nnoremap ; : " Trick
+nnoremap ; :
 nmap <silent> <leader>/ :nohlsearch<CR>
 
 " Indent
