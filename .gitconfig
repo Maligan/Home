@@ -1,0 +1,13 @@
+[user]
+	email = maligan@rambler.ru
+	name = Alexandr Frolov
+[color]
+	branch = true
+	diff = true
+	status = true
+[alias]
+	co = checkout
+	br = branch
+	st = status
+	cm = commit
+	last = log -1 HEAD

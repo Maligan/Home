@@ -1,0 +1,40 @@
+set nocompatible
+
+" Pathogen
+call pathogen#infect()
+filetype plugin indent on
+
+" Behaviors
+set title
+set hidden
+set noswapfile
+set backspace=indent,eol,start
+set mouse=a
+set nowrap
+
+" Hotkeys
+let mapleader=","
+nmap <silent> <leader>rc :e $MYVIMRC<CR> " Quick accsess to .vimrc file
+nnoremap ; : " Trick
+nmap <silent> <leader>/ :nohlsearch<CR>
+
+" Indent
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set autoindent
+
+" Statusbar
+set showmode
+set showcmd
+
+
+" TRASH
+set incsearch
+set background=dark
+colo solarized
+syntax on
+set nowrap
+set number
+set numberwidth=4
+
