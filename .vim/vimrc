@@ -28,13 +28,16 @@ set autoindent
 set showmode
 set showcmd
 
+" Colors
+set background=dark
+let g:solarized_termcolors = 256
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+colorscheme solarized
 
 " TRASH
 set incsearch
-set background=dark
-colo solarized
 syntax on
 set nowrap
 set number
 set numberwidth=4
-
