@@ -1,0 +1,41 @@
+snippet pubf
+	public function ${1:name}(${2}):${3:void}
+	{
+		${4:/* code */}
+	}
+
+snippet prof
+	protected function ${1:name}(${2}):${3:void}
+	{
+		${4:/* code */}
+	}
+
+snippet prif
+	private function ${1:name}(${2}):${3:void}
+	{
+		${4:/* code */}
+	}
+
+snippet for
+	for (${2:i} = 0; $2 < ${1:count}; $2${3:++})
+	{
+		${4:/* code */}
+	}
+
+snippet eh
+	for each (var ${1:item}:${2:Type} in ${3:list})
+	{
+		${4:/* code */}
+	}
+
+snippet do
+	do
+	{
+		${2:/* code */}
+	} while (${1:/* condition */});
+
+snippet wh
+	while (${1:/* condition */})
+	{
+		${2:/* code */}
+	}
