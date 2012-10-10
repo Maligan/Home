@@ -6,9 +6,9 @@
 	diff = true
 	status = true
 [alias]
-	co = checkout
+	ch = checkout
 	br = branch
 	st = status
-	cm = commit
-	last = log -1 HEAD
+	co = commit
 	gr = log --oneline --graph
+	last = log -1 HEAD
