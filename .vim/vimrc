@@ -13,6 +13,7 @@ set mouse=a
 set nowrap
 
 " Hotkeys
+let g:ctrlp_map = "<leader>t"
 let mapleader=","
 nmap <silent> <leader>rc :e $MYVIMRC<CR> " Quick accsess to .vimrc file
 nnoremap ; :
