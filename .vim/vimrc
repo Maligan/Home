@@ -6,6 +6,7 @@ filetype plugin indent on
 
 " Behaviors
 set title
+set shortmess+=I
 set hidden
 set noswapfile
 set backspace=indent,eol,start
