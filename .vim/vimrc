@@ -11,9 +11,12 @@ set hidden
 set noswapfile
 set backspace=indent,eol,start
 set mouse=a
+set scrolloff=3
 set nowrap
+set linebreak
 
 " Hotkeys
+inoremap <C-c> <Esc>
 let g:ctrlp_map = "<leader>t"
 let mapleader=","
 nmap <silent> <leader>rc :e $MYVIMRC<CR> " Quick accsess to .vimrc file
@@ -29,6 +32,7 @@ set autoindent
 " Statusbar
 set showmode
 set showcmd
+set ruler
 
 " Colors
 set background=dark
