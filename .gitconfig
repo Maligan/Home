@@ -10,5 +10,6 @@
 	br = branch
 	st = status
 	co = commit
-	gr = log --oneline --graph
+	sub = submodule
 	last = log -1 HEAD
+	gr = log --oneline --graph

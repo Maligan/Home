@@ -12,13 +12,15 @@ set noswapfile
 set backspace=indent,eol,start
 set mouse=a
 set nowrap
+set autowrite
 
 " Hotkeys
-let g:ctrlp_map = "<leader>t"
 let mapleader=","
-nmap <silent> <leader>rc :e $MYVIMRC<CR> " Quick accsess to .vimrc file
 nnoremap ; :
+nmap <silent> <leader>rc :e $MYVIMRC<CR>
 nmap <silent> <leader>/ :nohlsearch<CR>
+nmap <silent> <leader>l :set list!<CR>
+set listchars=tab:▸\ ,eol:¬,trail:·
 
 " Indent
 set tabstop=4
@@ -43,3 +45,8 @@ syntax on
 set nowrap
 set number
 set numberwidth=4
+
+if has("autocmd")
+	autocmd! BufWritePost .vimrc 
+	autocmd BufWritePost .vimrc source $MYVIMRC
+endif
