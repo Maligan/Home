@@ -25,6 +25,9 @@ nmap <silent> <leader>rc :e $MYVIMRC<CR>
 nmap <silent> <leader>/ :nohlsearch<CR>
 nmap <silent> <leader>l :set list!<CR>
 set listchars=tab:▸\ ,eol:¬,trail:·
+" Run current script
+nmap <F5> :!echo -ne "\ec\e[3J" ; %:p<CR>
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 
 " Indent
 set tabstop=4
@@ -51,6 +54,48 @@ set nowrap
 set number
 set numberwidth=4
 
+" Windows clipboard
+function! Putclip(type, ...) range
+  let sel_save = &selection
+  let &selection = "inclusive"
+  let reg_save = @@
+  if a:type == 'n'
+    silent exe a:firstline . "," . a:lastline . "y"
+  elseif a:type == 'c'
+    silent exe a:1 . "," . a:2 . "y"
+  else
+    silent exe "normal! `<" . a:type . "`>y"
+  endif
+  "call system('putclip', @@)
+  "As of Cygwin 1.7.13, the /dev/clipboard device was added to provide
+  "access to the native Windows clipboard. It provides the added benefit
+  "of supporting utf-8 characters which putclip currently does not. Based
+  "on a tip from John Beckett, use the following:
+  call writefile(split(@@,"\n"), '/dev/clipboard')
+  let &selection = sel_save
+  let @@ = reg_save
+endfunction
+
+vnoremap <silent> <leader>y :call Putclip(visualmode(), 1)<CR>
+nnoremap <silent> <leader>y :call Putclip('n', 1)<CR>
+
+function! Getclip()
+  let reg_save = @@
+  "let @@ = system('getclip')
+  "Much like Putclip(), using the /dev/clipboard device to access to the
+  "native Windows clipboard for Cygwin 1.7.13 and above. It provides the
+  "added benefit of supporting utf-8 characters which getclip currently does
+  "not. Based again on a tip from John Beckett, use the following:
+  let @@ = join(readfile('/dev/clipboard'), "\n")
+  setlocal paste
+  exe 'normal p'
+  setlocal nopaste
+  let @@ = reg_save
+endfunction
+
+nnoremap <silent> <leader>p :call Getclip()<CR>
+
+" Auto source .vimrc
 if has("autocmd")
 	autocmd! BufWritePost .vimrc 
 	autocmd BufWritePost .vimrc source $MYVIMRC
