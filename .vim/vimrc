@@ -15,6 +15,7 @@ set scrolloff=3
 set nowrap
 set autowrite
 set linebreak
+set listchars=tab:▸\ ,eol:¬,trail:·
 
 " Hotkeys
 inoremap <C-c> <Esc>
@@ -24,13 +25,15 @@ nnoremap ; :
 nmap <silent> <leader>rc :e $MYVIMRC<CR>
 nmap <silent> <leader>/ :nohlsearch<CR>
 nmap <silent> <leader>l :set list!<CR>
-set listchars=tab:▸\ ,eol:¬,trail:·
+" Run current script
+nmap <F5> :!echo -ne "\ec\e[3J" ; %:p<CR>
 
 " Indent
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set autoindent
+set smartindent
 
 " Statusbar
 set showmode

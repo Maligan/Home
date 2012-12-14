@@ -1,3 +1,0 @@
-[submodule ".vim/bundle/molly"]
-	path = .vim/bundle/molly
-	url = git@github.com:Maligan/molly.vim.git
