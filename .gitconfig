@@ -13,3 +13,5 @@
 	sub = submodule
 	last = log -1 HEAD
 	gr = log --oneline --graph
+[core]
+	filemode = false
