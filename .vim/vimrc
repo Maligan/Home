@@ -12,7 +12,7 @@ set hidden
 set noswapfile
 set backspace=indent,eol,start
 set mouse=a
-set scrolloff=3
+set scrolloff=0
 set nowrap
 set autowrite
 set linebreak
