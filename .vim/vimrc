@@ -102,3 +102,10 @@ if has("autocmd")
 	autocmd! BufWritePost .vimrc 
 	autocmd BufWritePost .vimrc source $MYVIMRC
 endif
+
+"
+" ActionScriptCompiler
+"
+compiler mxmlc
+nmap <C-B> :make<CR>
+nmap <C-R> :!fpdb debug.swf<CR>
