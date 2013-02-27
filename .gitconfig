@@ -15,4 +15,4 @@
 	gr = log --oneline --graph
 [core]
 	filemode = false
-	autocrlf = true
+	; autocrlf = true

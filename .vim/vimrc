@@ -17,15 +17,17 @@ set nowrap
 set autowrite
 set linebreak
 set listchars=tab:▸\ ,eol:¬,trail:·
+set fillchars=vert:│
+let NERDTreeMinimalUI=1
 
 " Hotkeys
 inoremap <C-c> <Esc>
-let g:ctrlp_map = "<leader>t"
 let mapleader=","
 nnoremap ; :
 nmap <silent> <leader>rc :e $MYVIMRC<CR>
 nmap <silent> <leader>/ :nohlsearch<CR>
 nmap <silent> <leader>l :set list!<CR>
+nmap <silent> <leader>t :NERDTreeToggle<CR>
 " Run current script
 nmap <F5> :!echo -ne "\ec\e[3J" ; %:p<CR>
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
