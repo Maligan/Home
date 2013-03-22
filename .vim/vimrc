@@ -19,6 +19,7 @@ set linebreak
 set listchars=tab:▸\ ,eol:¬,trail:·
 set fillchars=vert:│
 let NERDTreeMinimalUI=1
+let g:EasyMotion_leader_key = '<Leader>'
 
 " Hotkeys
 inoremap <C-c> <Esc>
@@ -110,4 +111,5 @@ endif
 "
 compiler mxmlc
 nmap <C-B> :make<CR>
-nmap <C-R> :!fpdb debug.swf<CR>
+nmap <C-R> :!adl.exe descriptor.xml -screensize iPhone<CR>
+set wildignore=*.swc,*.swf,ctags
