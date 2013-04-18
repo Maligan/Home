@@ -1,5 +1,5 @@
 let &efm = ''
-let &efm .= '\ %#[mxmlc]\ %f(%l):\ Столбец:\ %c\ Ошибка:\ %m' . ','
+let &efm .= '\ %#[mxmlc]\ %f(%l):\ col:\ %c\ Error:\ %m' . ','
 let &efm .= '%-G%.%#'
 
 let &makeprg = 'ant'
