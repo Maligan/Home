@@ -26,6 +26,7 @@ map y "+y
 map p "+p
 map P "+P
 map d "+d
+map D "+D
 
 " Hotkeys
 inoremap <C-c> <Esc>
