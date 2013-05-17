@@ -45,7 +45,7 @@ syn keyword actionScriptConditional	if else switch
 syn keyword actionScriptRepeat		while for each do in
 syn keyword actionScriptBranch		break continue
 syn keyword actionScriptOperator	new delete instanceof typeof
-syn keyword actionScriptType		Array Boolean Date Function Number Object String RegExp int void 
+syn keyword actionScriptType		Array Boolean Date Function Number Object String RegExp int uint void 
 syn keyword actionScriptStatement	return with
 syn keyword actionScriptBoolean		true false
 syn keyword actionScriptNull		null undefined
