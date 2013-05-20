@@ -605,7 +605,7 @@ exe "let s:fmt_stnd     = ' cterm=NONE".s:s." gui=NONE".s:s." term=NONE".s:s."'"
 
 exe "hi Normal"         . s:fg_base0  .s:bg_back   .s:fmt_none
 
-exe "hi Comment"        . s:fg_base01 .s:bg_none   .s:fmt_ital
+exe "hi Comment"        . s:fg_base01 .s:bg_none   .s:fmt_none
 "      *Comment         any comment
 
 exe "hi Constant"       . s:fg_cyan   .s:bg_none   .s:fmt_none
