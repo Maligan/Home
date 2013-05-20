@@ -22,11 +22,14 @@ set listchars=tab:▸\ ,eol:¬,trail:·
 set fillchars=vert:│
 let NERDTreeMinimalUI=1
 
-map y "+y
-map p "+p
-map P "+P
-map d "+d
-map D "+D
+nmap y "+y
+vmap y "+y
+nmap p "+p
+vmap p "+p
+nmap P "+P
+nmap D "+D
+nmap d "+d
+vmap d "+d
 
 " Hotkeys
 inoremap <C-c> <Esc>
