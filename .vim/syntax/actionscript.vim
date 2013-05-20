@@ -42,10 +42,10 @@ syn match   actionScriptNumber	       "-\=\<\d\+L\=\>\|0[xX][0-9a-fA-F]\+\>"
 syn region  actionScriptRegexpString     start=+/[^/*]+me=e-1 skip=+\\\\\|\\/+ end=+/[gi]\{0,2\}\s*$+ end=+/[gi]\{0,2\}\s*[;.,)\]}]+me=e-1 contains=@htmlPreproc oneline
 
 syn keyword actionScriptConditional	if else switch
-syn keyword actionScriptRepeat		while for do in
+syn keyword actionScriptRepeat		while for each do in
 syn keyword actionScriptBranch		break continue
 syn keyword actionScriptOperator	new delete instanceof typeof
-syn keyword actionScriptType		Array Boolean Date Function Number Object String RegExp int void 
+syn keyword actionScriptType		Array Boolean Date Function Number Object String RegExp int uint void 
 syn keyword actionScriptStatement	return with
 syn keyword actionScriptBoolean		true false
 syn keyword actionScriptNull		null undefined
