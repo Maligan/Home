@@ -1,0 +1,6 @@
+[submodule ".vim/bundle/molly"]
+	path = .vim/bundle/molly
+	url = git://github.com/Maligan/Molly.git
+[submodule ".vim/bundle/nerdtree"]
+	path = .vim/bundle/nerdtree
+	url = git://github.com/scrooloose/nerdtree.git
