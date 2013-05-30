@@ -45,14 +45,14 @@ syn keyword actionScriptConditional	if else switch
 syn keyword actionScriptRepeat		while for each do in
 syn keyword actionScriptBranch		break continue
 syn keyword actionScriptOperator	new delete instanceof typeof
-syn keyword actionScriptType		Array Boolean Date Function Number Object String RegExp int uint void 
+syn keyword actionScriptType		XML Array Boolean Date Function Number Object String RegExp int uint void 
 syn keyword actionScriptStatement	return with
 syn keyword actionScriptBoolean		true false
 syn keyword actionScriptNull		null undefined
 syn keyword actionScriptIdentifier	arguments this
 syn keyword actionScriptLabel		case default
 syn keyword actionScriptException	try catch finally throw
-syn keyword actionScriptReserved	abstract var get set trace boolean byte char class const debugger double enum export extends override final float goto implements import interface long native package private protected public short static super synchronized throws transient volatile 
+syn keyword actionScriptReserved	abstract var get set trace boolean byte char class const debugger double enum export extends override final float goto implements import interface long package private protected public internal native short static super synchronized throws transient volatile 
 
 
 if exists("actionSctipt_fold")
