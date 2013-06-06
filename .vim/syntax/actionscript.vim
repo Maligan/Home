@@ -51,7 +51,7 @@ syn keyword actionScriptBoolean		true false
 syn keyword actionScriptNull		null undefined
 syn keyword actionScriptLabel		case default
 syn keyword actionScriptException	try catch finally throw
-syn keyword actionScriptReserved	arguments this abstract var get set trace boolean byte char class const debugger double enum export extends override final float implements import interface long package private protected public internal native short static super synchronized throws transient volatile 
+syn keyword actionScriptReserved	arguments this dinamic var get set trace boolean byte char class const debugger double enum export extends override final float implements import interface long package private protected public internal native short static super synchronized throws transient volatile 
 
 
 if exists("actionSctipt_fold")
