@@ -25,3 +25,6 @@
 [submodule ".vim/bundle/repeat"]
 	path = .vim/bundle/repeat
 	url = https://github.com/tpope/vim-repeat.git
+[submodule ".vim/bundle/togglelist"]
+	path = .vim/bundle/togglelist
+	url = https://github.com/milkypostman/vim-togglelist.git
