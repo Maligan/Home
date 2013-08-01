@@ -19,12 +19,9 @@
 [submodule ".vim/bundle/syntastic"]
 	path = .vim/bundle/syntastic
 	url = git://github.com/scrooloose/syntastic.git
-[submodule ".vim/bundle/codepad"]
-	path = .vim/bundle/codepad
-	url = https://github.com/vim-scripts/codepad.git
-[submodule ".vim/bundle/repeat"]
-	path = .vim/bundle/repeat
-	url = https://github.com/tpope/vim-repeat.git
 [submodule ".vim/bundle/togglelist"]
 	path = .vim/bundle/togglelist
 	url = https://github.com/milkypostman/vim-togglelist.git
+[submodule ".vim/bundle/repeat"]
+	path = .vim/bundle/repeat
+	url = https://github.com/tpope/vim-repeat.git
