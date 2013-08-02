@@ -47,13 +47,22 @@ source ~/.git-completion.bash
 # for example, cd /vr/lgo/apaache would find /var/log/apache
 # shopt -s cdspell
 
+# Colors
+ESC_SEQ="\x1b["
+COL_RESET=$ESC_SEQ"39;49;00m"
+COL_RED=$ESC_SEQ"31;01m"
+COL_GREEN=$ESC_SEQ"32;01m"
+COL_YELLOW=$ESC_SEQ"33;01m"
+COL_BLUE=$ESC_SEQ"34;01m"
+COL_MAGENTA=$ESC_SEQ"35;01m"
+COL_CYAN=$ESC_SEQ"36;01m"
 
 cygpath_and_git_branch () {
 	# Замена cygwin адрессов дисков
 	winpath=$(cygpath -w $@)
 	# Название текущей git-ветки
 	branch=$(git name-rev HEAD 2> /dev/null | sed "s#HEAD\ \(.*\)#\1#")
-	[ $branch ] && branch=$(echo -e "(\033[33;1m$branch\033[m)")
+	[ $branch ] && branch=$(echo -e "($branch)")
 
 	echo $winpath $branch
 }
@@ -66,8 +75,8 @@ export CYGWIN=nodosfilewarning
 check-ssh-agent() {
     [ -S "$SSH_AUTH_SOCK" ] && { ssh-add -l >& /dev/null || [ $? -ne 2 ]; }
 }
-check-ssh-agent || export SSH_AUTH_SOCK=~/.ssh/ssh-agent.sock
-check-ssh-agent || eval "$(ssh-agent -s -a ~/.ssh/ssh-agent.sock)" > /dev/null
+#check-ssh-agent || export SSH_AUTH_SOCK=~/.ssh/ssh-agent.sock
+#check-ssh-agent || eval "$(ssh-agent -s -a ~/.ssh/ssh-agent.sock)" > /dev/null
 
 # Completion options
 #
@@ -134,6 +143,7 @@ eval `dircolors -b ~/.dir_colors`
 # Some shortcuts for different directory listings
 alias ls='ls --color=tty'                 # classify files in colour
 alias g='git'
+alias open='cygstart'
 # alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
 # alias ll='ls -l'                              # long list
