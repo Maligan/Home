@@ -1,7 +1,4 @@
 let &efm = ''
-let &efm .= '%A%f:%l,%C%t%*[^:]: %m,%-C,%+Z%p^,'
+let &efm .= '%f(%l): col: %c %t%*[^:]: %m,'
 let &efm .= '%-G%.%#'
 let &makeprg = 'make'
-
-
-
