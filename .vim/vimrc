@@ -41,7 +41,7 @@ let NERDTreeMinimalUI=1
 "vmap d "+d
 
 " Hotkeys
-inoremap jk <Esc>
+inoremap kj <Esc>
 inoremap <C-c> <Esc>
 inoremap <C-c> <Esc>
 let mapleader=","
@@ -88,6 +88,15 @@ set numberwidth=4
 if has("autocmd")
 	autocmd! BufWritePost .vimrc 
 	autocmd BufWritePost .vimrc source $MYVIMRC
+endif
+
+
+set noshowmode
+if &term =~ '^xterm'
+	  " solid underscore
+	  let &t_SI .= "\<Esc>[5 q"
+	  " solid block
+	  let &t_EI .= "\<Esc>[1 q"
 endif
 
 "
