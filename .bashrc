@@ -62,7 +62,7 @@ cygpath_and_git_branch () {
 	winpath=$(cygpath -w $@)
 	# Название текущей git-ветки
 	branch=$(git name-rev HEAD 2> /dev/null | sed "s#HEAD\ \(.*\)#\1#")
-	[ $branch ] && branch=$(echo -e "($branch)")
+	[ $branch ] && branch=$(echo -ne "($branch)")
 
 	echo $winpath $branch
 }
