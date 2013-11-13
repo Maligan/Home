@@ -67,6 +67,8 @@ cygpath_and_git_branch () {
 	echo $winpath $branch
 }
 
+MC_SKIN=$HOME/.mc/solarized.ini
+
 export PS1="\$(cygpath_and_git_branch '\w') $ "
 
 export CYGWIN=nodosfilewarning
@@ -137,6 +139,7 @@ check-ssh-agent() {
 # alias grep='grep --color'                     # show differences in colour
 # alias egrep='egrep --color=auto'              # show differences in colour
 # alias fgrep='fgrep --color=auto'              # show differences in colour
+alias mc='mc -b'
 alias cls='echo -ne "\ec\e[3J"'
 eval `dircolors -b ~/.dir_colors`
 #
