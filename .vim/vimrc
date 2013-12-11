@@ -34,20 +34,12 @@ set clipboard=unnamed
 let NERDTreeMinimalUI=1
 set shell=/bin/bash
 
-"nmap y "+y
-"vmap y "+y
-"nmap p "+p
-"vmap p "+p
-"nmap P "+P
-"nmap D "+D
-"nmap d "+d
-"vmap d "+d
-
 " Hotkeys
 inoremap kj <Esc>
 noremap <C-c> <Esc>
 let mapleader=","
 nnoremap ; :
+vnoremap ; :
 nmap <silent> <leader>rc :e $MYVIMRC<CR>
 nmap <silent> <leader>/ :set hlsearch!<CR>
 nmap <silent> <leader>w :set list!<CR>
@@ -61,6 +53,9 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 inoremap <C-L> <C-^>
 "noremap <F5> :silent! !cygstart http://vk.com/app2646937_57109308<CR>
 "map <leader>s :execute "lvimgrep /" . expand("<cword>") . "/j **" <Bar> lopen<CR>
+" Autocompete
+let g:SuperTabMappingForward = ''
+let g:SuperTabMappingBackward = '<C-@>'
 
 
 " Indent
@@ -117,7 +112,7 @@ ab DU DisplayUtils
 compiler mxmlc
 nmap <S-F6> :make clean<CR>
 nmap <F6> :make<CR>
-nmap <F5> :!adl descriptor.xml -screensize QVGA<CR>
+nmap <F5> :!adl descriptor.xml -screensize iPhone<CR>
 nmap <S-F5> :make<CR><F5>
 set wildignore=*.swc,*.swf,ctags,*.apk
 
@@ -132,9 +127,7 @@ set imsearch=0
 
 
 function! MSDNLookup(keyword)
-    silent execute ':!cygstart http://www.google.com/microsoft?hl=en\&q='.a:keyword.'\&btnG=Search'
+    silent execute ':!cygstart http://www.google.com/?hl=ru\&q='.a:keyword.'\&btnI=Search'
     normal ^L
 endfunction
 nnoremap <F3> :call MSDNLookup(expand("<cword>"))<CR>
-
-
