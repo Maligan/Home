@@ -54,8 +54,8 @@ inoremap <C-L> <C-^>
 "noremap <F5> :silent! !cygstart http://vk.com/app2646937_57109308<CR>
 "map <leader>s :execute "lvimgrep /" . expand("<cword>") . "/j **" <Bar> lopen<CR>
 " Autocompete
-let g:SuperTabMappingBackward = '<c-@>'
-let g:SuperTabMappingForward = ''
+let g:SuperTabMappingBackward = ''
+let g:SuperTabMappingForward = '<c-@>'
 set completeopt=menuone
 
 "
@@ -86,9 +86,15 @@ endfunction
 set omnifunc=TagCamelCompleteFunction
 
 autocmd BufWritePost *
-      \ if filereadable('tags') |
-      \   call system('ctags -a '.expand('%')) |
-      \ endif
+	\ if filereadable('tags') |
+	\   call system('ctags -a '.expand('%')) |
+	\ endif
+
+autocmd FileType *
+    \ if &omnifunc != '' |
+    \   call SuperTabChain(&omnifunc, "<c-p>") |
+    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
+    \ endif
 
 " LayerManager
 " LayerMng
