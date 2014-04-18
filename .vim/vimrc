@@ -96,6 +96,7 @@ autocmd FileType *
     \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
     \ endif
 
+autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 " LayerManager
 " LayerMng
 " layerManager  _layerManager  _layerManager  _layerManager
