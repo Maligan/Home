@@ -67,18 +67,15 @@ cygpath_and_git_branch () {
 	echo $winpath $branch
 }
 
-MC_SKIN=$HOME/.mc/solarized.ini
-
 export PS1="\$(cygpath_and_git_branch '\w') $ "
-
 export CYGWIN=nodosfilewarning
 
+#
 # SSH-Agent
-check-ssh-agent() {
-    [ -S "$SSH_AUTH_SOCK" ] && { ssh-add -l >& /dev/null || [ $? -ne 2 ]; }
-}
-#check-ssh-agent || export SSH_AUTH_SOCK=~/.ssh/ssh-agent.sock
-#check-ssh-agent || eval "$(ssh-agent -s -a ~/.ssh/ssh-agent.sock)" > /dev/null
+#
+check-ssh-agent() { [ -S "${SSH_AUTH_SOCK}" ] && ps -ef | grep "${SSH_AGENT_PID}" | grep "ssh-agent$" > /dev/null; }
+check-ssh-agent || { export SSH_SOCKET=~/.ssh/ssh-agent.socket && [ -f "${SSH_SOCKET}" ] && . "${SSH_SOCKET}"; }
+check-ssh-agent || { ssh-agent | sed 's/^echo/#echo/' > "${SSH_SOCKET}" && chmod 600 "${SSH_SOCKET}" && . "${SSH_SOCKET}"; }
 
 # Completion options
 #
@@ -235,3 +232,7 @@ alias open='cygstart'
 # }
 # 
 # alias cd=cd_func
+
+#
+# Multi terminal SSH-agent
+#
