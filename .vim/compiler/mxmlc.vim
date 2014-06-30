@@ -1,4 +1,4 @@
-let &makeprg = 'make'
+let &makeprg = 'mxmlc'
 
 " Clean up
 let &efm = ''
