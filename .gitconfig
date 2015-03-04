@@ -16,3 +16,5 @@
 [core]
 	filemode = false
 	; autocrlf = true
+[push]
+	default = simple
