@@ -26,7 +26,7 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
-source ~/.git-completion.bash
+#source ~/.git-completion.bash
 # Shell Options
 #
 # See man bash for more options...

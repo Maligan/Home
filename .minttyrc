@@ -29,3 +29,5 @@ Rows=38
 PgUpDnScroll=yes
 CursorType=block
 ConfirmExit=no
+Locale=
+Charset=

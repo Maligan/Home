@@ -24,6 +24,7 @@ set mouse=a
 set scrolloff=0
 set nowrap
 set autowrite
+set autoread
 set linebreak
 set ignorecase
 set smartcase
@@ -161,7 +162,7 @@ nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>:redraw!<CR>
 compiler mxmlc
 nmap <S-F6> :make clean<CR>
 nmap <F6> :make -s<CR>
-nmap <F5> :!adl descriptor.xml -screensize iPhoneRetina<CR>
+nmap <F5> :!adl descriptor.xml -screensize iPhone<CR>
 nmap <S-F5> :make -s<CR><F5>
 nmap <leader>r :!cygstart %:r.swf<cr>:!tail -f "C:\Users\malig_000\AppData\Roaming\Macromedia\Flash Player\Logs\flashlog.txt"<cr>
 set wildignore=*.swc,*.swf,ctags,*.apk
