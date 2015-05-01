@@ -15,5 +15,6 @@
 	gr = log --oneline --graph
 [core]
 	filemode = false
+	; autocrlf = true
 [push]
 	default = simple
