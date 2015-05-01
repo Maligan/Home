@@ -142,6 +142,12 @@ if &term =~ '^xterm'
 	let &t_EI .= "\e[1 q"
 endif
 
+" Avoiding escape timeout issues in mintty
+let &t_ti.="\e[?7727h"
+let &t_te.="\e[?7727l"
+noremap <Esc>O[ <Esc>
+noremap! <Esc>O[ <Esc>
+
 "
 " Toggle cursor color
 "
