@@ -35,7 +35,7 @@ set shell=/bin/bash
 let NERDTreeMinimalUI=1
 
 " Hotkeys
-inoremap kj <Esc>
+inoremap jj <Esc>
 noremap <C-c> <Esc>
 let mapleader=","
 nnoremap ; :
@@ -46,7 +46,8 @@ nmap <silent> <leader>/ :set hlsearch!<CR>
 nmap <silent> <leader>w :set list!<CR>
 nmap <silent> <leader>t :NERDTreeToggle<CR>
 nmap <silent> <leader>n :NERDTreeFind<CR>
-nmap <silent> <leader>m :make %<CR>
+nmap <silent> <leader>m :make<CR>
+nmap <silent> <leader>r <F5>
 nmap <silent> <leader>cp :CPPaste<CR>
 " Run current script
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
@@ -96,7 +97,7 @@ autocmd FileType *
     \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
     \ endif
 
-autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
+"autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 
 " Indent
 set tabstop=4
@@ -135,10 +136,24 @@ if &term =~ '^xterm'
 	" remove defalult identificatoin
 	set noshowmode
 	" solid underscore
-	let &t_SI .= "\<Esc>[5 q"
+	let &t_SI .= "\e[5 q"
 	" solid block
-	let &t_EI .= "\<Esc>[1 q"
+	let &t_EI .= "\e[1 q"
 endif
+
+"
+" Toggle cursor color
+"
+
+"silent !echo -ne "\e]12;220,50,47\a"
+"silent !echo -ne "\e]12;38,139,210\a"
+"imap <F12> <C-O>:silent call ToggleLanguage()<CR>
+nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>:redraw!<CR>
+nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>:redraw!<CR>
+"silent !echo -ne "\e]12;220,50,47\a"
+"silent !echo -ne "\e]12;38,139,210\a"
+"imap <F12> <C-O>:silent call ToggleLanguage()<CR>
+"nmap <silent> <c-l> :call Temp()<CR>
 
 "
 " ActionScriptCompiler
@@ -148,7 +163,7 @@ nmap <S-F6> :make clean<CR>
 nmap <F6> :make -s<CR>
 nmap <F5> :!adl descriptor.xml -screensize iPhoneRetina<CR>
 nmap <S-F5> :make -s<CR><F5>
-nmap <leader>r :!open %:r.swf<cr>:!tail -f "C:\Users\Maligan\AppData\Roaming\Macromedia\Flash Player\Logs\flashlog.txt"<cr>
+nmap <leader>r :!cygstart %:r.swf<cr>:!tail -f "C:\Users\malig_000\AppData\Roaming\Macromedia\Flash Player\Logs\flashlog.txt"<cr>
 set wildignore=*.swc,*.swf,ctags,*.apk
 
 nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>

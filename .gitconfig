@@ -7,12 +7,17 @@
 	status = true
 [alias]
 	ch = checkout
+	dt = difftool
 	br = branch
 	st = status
-	co = commit
-	sub = submodule
-	last = log -1 HEAD
+	co = checkout
+	ci = commit
 	gr = log --oneline --graph
 [core]
 	filemode = false
-	; autocrlf = true
+[push]
+	default = simple
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
