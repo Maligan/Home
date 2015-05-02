@@ -15,6 +15,7 @@
 	gr = log --oneline --graph
 [core]
 	filemode = false
+	editor = vim
 [push]
 	default = simple
 [diff]
