@@ -3,17 +3,277 @@ set nocompatible
 "
 " Vundle
 "
-filetype off 
+filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-Bundle 'git://github.com/gmarik/vundle.git'
+filetype plugin indent on
+
+Bundle 'gmarik/vundle'
+Bundle 'maligan/molly'
+Bundle 'tmhedberg/matchit'
+Bundle 'ervandew/supertab'
+Bundle 'mileszs/ack.vim'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'milkypostman/vim-togglelist'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'tpope/vim-repeat'
+Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/nerdcommenter'
+
+"
+" Shortcuts
+"
+let mapleader=","
+
+" Open .vimrc
+nnoremap <silent> <leader>v :e $MYVIMRC<CR>
+" Recursive search in current directory for matches with current word
+nnoremap <leader>f :<C-u>execute "Ack " . expand("<cword>") <Bar> cw<CR>
+" Shortcut for :%s//
+nnoremap <leader>s :<C-u>%s//<left>
+vnoremap <leader>s :s//<left>
+" Toggle search highlight
+nnoremap <silent> <leader>/ :set hlsearch!<CR>
+" Y from cursor position to the end of line
+nnoremap Y y$
+" Toggle whitespaces
+nnoremap <silent> <leader>w :set list!<CR>
+" In  mode exec git blame with selected text
+vnoremap <leader>b :<C-U>!git blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
+
+" Auto complete {} indent and position the cursor in the middle line
+inoremap {<CR> {<CR>}<Esc>O
+inoremap (<CR> (<CR>)<Esc>O
+inoremap [<CR> [<CR>]<Esc>O
+
+" Switch splits
+nnoremap <C-h> <C-W>h
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-l> <C-W>l
+
+ " Navigate with <Ctrl>-hjkl in Insert mode
+inoremap <C-h> <C-o>h
+inoremap <C-j> <C-o>j
+inoremap <C-k> <C-o>k
+inoremap <C-l> <C-o>l
+
+" Reselect area after change indent
+vnoremap < <gv
+vnoremap > >gv
+
+" В коммандном режиме разрешить прыгать в конец и начало строки, как в консоли
+"cnoremap <c-e> <end>
+"inoremap <c-e> <c-o>$
+"cnoremap <c-a> <home>
+"inoremap <c-a> <c-o>^
+
+" Move lines (http://www.vim.org/scripts/script.php?script_id=1590)
+nnoremap <C-S-k> ddkP
+nnoremap <C-S-j> ddp
+vnoremap <C-S-k> xkP'[V']
+vnoremap <C-S-j> xp'[V']
+
+" Find and replace in all open buffers (http://vim.wikia.com/wiki/VimTip382)
+function! Replace()
+	let s:word = input("Replace " . expand('<cword>') . " with:")
+	:exe 'bufdo! %s/\<' . expand('<cword>') . '\>/' . s:word . '/gce'
+	:unlet! s:word
+endfunction
+nnoremap <leader>r :<C-u>call Replace()<CR>
+
+"  mode pressing * or # searches for the current selection (from an idea by Michael Naumann)
+function! Selection(direction) range
+	let l:saved_reg = @"
+	execute "normal! vgvy"
+
+	let l:pattern = escape(@", '\\/.*$^~[]')
+	let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+	if a:direction == 'b'
+		execute "normal ?" . l:pattern . "^M"
+	elseif a:direction == 'gv'
+		call CmdLine("Ack " . l:pattern )
+	elseif a:direction == 'f'
+		execute "normal /" . l:pattern . "^M"
+	endif
+
+	let @/ = l:pattern
+	let @" = l:saved_reg
+endfunction
+
+function! CmdLine(str)
+    execute "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+
+vnoremap * :call Selection('f')<CR>
+vnoremap # :call Selection('b')<CR>
+" When you press gv you vimgrep after the selected text
+vnoremap gv :call Selection('gv')<CR>
 
 
 
-" Pathogen
-"call pathogen#infect('~/.vim/bundle/snipmate')
-"call pathogen#infect()
-"filetype plugin indent on
+
+
+nnoremap <leader>t :NERDTreeToggle<CR>
+nnoremap <leader>n :NERDTreeFind<CR>
+nnoremap <leader>m :make<CR>
+nnoremap <leader>cp :CPPaste<CR>
+
+inoremap jj <Esc>
+nnoremap <C-c> <Esc>
+nnoremap ; :
+vnoremap ; :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"
+" CamelCase complete
+"
+let g:SuperTabMappingBackward = '<c-@>'
+let g:SuperTabMappingForward = ''
+
+function! TagCamelCompleteFunction(findstart, base)
+    if a:findstart
+        let line = getline('.')
+        let start = col('.') - 1
+        while start > 0 && line[start - 1] =~ '[A-Za-z_]'
+            let start -= 1
+        endwhile
+        return start
+    else
+		" Define camel-pattren
+		let pattern = '\v\C^' . join(split(a:base, '\u\&'), '[A-Za-z_\d]*')
+
+		" Fetch 'name' field from tags
+		let matches = []
+		for entry in taglist(pattern) 
+			call add(matches, entry['name'])
+		endfor
+
+		return matches
+    endif
+endfunction
+
+set omnifunc=TagCamelCompleteFunction
+set completeopt=menuone
+
+"
+" Auto ctags
+"
+autocmd BufWritePost *
+	\ if filereadable('tags') |
+	\   call system('ctags -a '.expand('%')) |
+	\ endif
+
+autocmd FileType *
+    \ if &omnifunc != '' |
+    \   call SuperTabChain(&omnifunc, "<c-p>") |
+    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
+    \ endif
+
+"
+" Terminal
+"
+" Mode based cursor
+if &term =~ '^xterm'
+	" remove defalult identificatoin
+	set noshowmode
+	" solid underscore
+	let &t_SI .= "\e[5 q"
+	" solid block
+	let &t_EI .= "\e[1 q"
+endif
+
+" Avoiding escape timeout issues in mintty
+let &t_ti.="\e[?7727h"
+let &t_te.="\e[?7727l"
+noremap <Esc>O[ <Esc>
+noremap! <Esc>O[ <Esc>
+
+"
+" Auto source .vimrc
+"
+if has("autocmd")
+	autocmd! BufWritePost .vimrc 
+	autocmd BufWritePost .vimrc source $MYVIMRC
+endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if has("multi_byte")
 	set encoding=utf-8
@@ -45,68 +305,6 @@ set clipboard=unnamed
 set shell=/bin/bash
 let NERDTreeMinimalUI=1
 
-" Hotkeys
-inoremap jj <Esc>
-noremap <C-c> <Esc>
-let mapleader=","
-nnoremap ; :
-vnoremap ; :
-
-nmap <silent> <leader>rc :e $MYVIMRC<CR>
-nmap <silent> <leader>/ :set hlsearch!<CR>
-nmap <silent> <leader>w :set list!<CR>
-nmap <silent> <leader>t :NERDTreeToggle<CR>
-nmap <silent> <leader>n :NERDTreeFind<CR>
-nmap <silent> <leader>m :make<CR>
-nmap <silent> <leader>r <F5>
-nmap <silent> <leader>cp :CPPaste<CR>
-" Run current script
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
-inoremap <C-L> <C-^>
-"map <leader>s :execute "lvimgrep /" . expand("<cword>") . "/j **" <Bar> lopen<CR>
-
-" Autocompete
-let g:SuperTabMappingBackward = '<c-@>'
-let g:SuperTabMappingForward = ''
-set completeopt=menuone
-
-"
-" CamelComplete
-"
-function! TagCamelCompleteFunction(findstart, base)
-    if a:findstart
-        let line = getline('.')
-        let start = col('.') - 1
-        while start > 0 && line[start - 1] =~ '[A-Za-z_]'
-            let start -= 1
-        endwhile
-        return start
-    else
-		" Define camel-pattren
-		let pattern = '\v\C^' . join(split(a:base, '\u\&'), '[A-Za-z_\d]*')
-
-		" Fetch 'name' field from tags
-		let matches = []
-		for entry in taglist(pattern) 
-			call add(matches, entry['name'])
-		endfor
-
-		return matches
-    endif
-endfunction
-
-set omnifunc=TagCamelCompleteFunction
-
-autocmd BufWritePost *
-	\ if filereadable('tags') |
-	\   call system('ctags -a '.expand('%')) |
-	\ endif
-
-autocmd FileType *
-    \ if &omnifunc != '' |
-    \   call SuperTabChain(&omnifunc, "<c-p>") |
-    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
-    \ endif
 
 "autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 
@@ -131,32 +329,14 @@ colorscheme solarized
 
 " TRASH
 set incsearch
-syntax on
 set nowrap
 set number
+syntax on
 set numberwidth=4
 
-" Auto source .vimrc
-if has("autocmd")
-	autocmd! BufWritePost .vimrc 
-	autocmd BufWritePost .vimrc source $MYVIMRC
-endif
 
 
-if &term =~ '^xterm'
-	" remove defalult identificatoin
-	set noshowmode
-	" solid underscore
-	let &t_SI .= "\e[5 q"
-	" solid block
-	let &t_EI .= "\e[1 q"
-endif
 
-" Avoiding escape timeout issues in mintty
-let &t_ti.="\e[?7727h"
-let &t_te.="\e[?7727l"
-noremap <Esc>O[ <Esc>
-noremap! <Esc>O[ <Esc>
 
 "
 " Toggle cursor color
@@ -180,7 +360,7 @@ nmap <S-F6> :make clean<CR>
 nmap <F6> :make -s<CR>
 nmap <F5> :!adl descriptor.xml -screensize iPhone<CR>
 nmap <S-F5> :make -s<CR><F5>
-nmap <leader>r :!cygstart %:r.swf<cr>:!tail -f "C:\Users\malig_000\AppData\Roaming\Macromedia\Flash Player\Logs\flashlog.txt"<cr>
+"nmap <leader>r :!cygstart %:r.swf<cr>:!tail -f "C:\Users\malig_000\AppData\Roaming\Macromedia\Flash Player\Logs\flashlog.txt"<cr>
 set wildignore=*.swc,*.swf,ctags,*.apk
 
 nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
