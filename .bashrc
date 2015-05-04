@@ -136,9 +136,13 @@ check-ssh-agent || { ssh-agent | sed 's/^echo/#echo/' > "${SSH_SOCKET}" && chmod
 # alias grep='grep --color'                     # show differences in colour
 # alias egrep='egrep --color=auto'              # show differences in colour
 # alias fgrep='fgrep --color=auto'              # show differences in colour
+
 alias mc='mc -b'
 alias cls='echo -ne "\ec\e[3J"'
+alias vi=vim
+alias grep=ack
 eval `dircolors -b ~/.dir_colors`
+
 #
 # Some shortcuts for different directory listings
 alias ls='ls --color=tty'                 # classify files in colour

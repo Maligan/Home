@@ -12,9 +12,10 @@ Bundle 'gmarik/vundle'
 Bundle 'maligan/molly'
 Bundle 'tmhedberg/matchit'
 Bundle 'ervandew/supertab'
-Bundle 'mileszs/ack.vim'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'milkypostman/vim-togglelist'
+Bundle 'tommcdo/vim-exchange'
+Bundle 'sirver/ultisnips'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-unimpaired'
@@ -32,59 +33,52 @@ nnoremap <silent> <leader>v :e $MYVIMRC<CR>
 " Recursive search in current directory for matches with current word
 nnoremap <leader>f :<C-u>execute "Ack " . expand("<cword>") <Bar> cw<CR>
 " Shortcut for :%s//
-nnoremap <leader>s :<C-u>%s//<left>
-vnoremap <leader>s :s//<left>
+nnoremap <leader>s :<C-u>%s//g<left><left>
+vnoremap <leader>s :s//g<left><left>
 " Toggle search highlight
 nnoremap <silent> <leader>/ :set hlsearch!<CR>
 " Y from cursor position to the end of line
 nnoremap Y y$
 " Toggle whitespaces
 nnoremap <silent> <leader>w :set list!<CR>
-" In  mode exec git blame with selected text
-vnoremap <leader>b :<C-U>!git blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
-
+" Boosted command prompt call
+nnoremap ; :
+vnoremap ; :
+" Fix same issues with <C-c>
+nnoremap <C-c> <Esc>
 " Auto complete {} indent and position the cursor in the middle line
-inoremap {<CR> {<CR>}<Esc>O
-inoremap (<CR> (<CR>)<Esc>O
-inoremap [<CR> [<CR>]<Esc>O
+"inoremap {<CR> {<CR>}<Esc>O
+"inoremap (<CR> (<CR>)<Esc>O
+"inoremap [<CR> [<CR>]<Esc>O
+
+inoremap ( ()<left>
+
 
 " Switch splits
 nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
-
- " Navigate with <Ctrl>-hjkl in Insert mode
+" Navigate with <Ctrl>-hjkl in Insert mode
 inoremap <C-h> <C-o>h
 inoremap <C-j> <C-o>j
 inoremap <C-k> <C-o>k
 inoremap <C-l> <C-o>l
-
 " Reselect area after change indent
 vnoremap < <gv
 vnoremap > >gv
-
-" В коммандном режиме разрешить прыгать в конец и начало строки, как в консоли
-"cnoremap <c-e> <end>
-"inoremap <c-e> <c-o>$
-"cnoremap <c-a> <home>
-"inoremap <c-a> <c-o>^
-
-" Move lines (http://www.vim.org/scripts/script.php?script_id=1590)
-nnoremap <C-S-k> ddkP
-nnoremap <C-S-j> ddp
-vnoremap <C-S-k> xkP'[V']
-vnoremap <C-S-j> xp'[V']
-
-" Find and replace in all open buffers (http://vim.wikia.com/wiki/VimTip382)
-function! Replace()
-	let s:word = input("Replace " . expand('<cword>') . " with:")
-	:exe 'bufdo! %s/\<' . expand('<cword>') . '\>/' . s:word . '/gce'
-	:unlet! s:word
-endfunction
-nnoremap <leader>r :<C-u>call Replace()<CR>
-
-"  mode pressing * or # searches for the current selection (from an idea by Michael Naumann)
+" Bubbling lines with unimpaired (<8a> = <C-S-j>, <8b> = <C-S-k> in mintty)
+nmap  ]e
+nmap  [e
+imap  <C-o>]e
+imap  <C-o>[e
+vmap  ]egv
+vmap  [egv
+" Find and replace world under cursor
+nnoremap <leader>rr :%s/\<<C-r><C-w>\>//g<left><left>
+nnoremap <leader>rb :bufdo %s/\<<C-r><C-w>\>//ge<left><left><left>
+nnoremap <leader>ra :argdo %s/\<<C-r><C-w>\>//ge<left><left><left>
+" Visual mode pressing *  # searches for the current selection (from an idea by Michael Naumann)
 function! Selection(direction) range
 	let l:saved_reg = @"
 	execute "normal! vgvy"
@@ -94,8 +88,6 @@ function! Selection(direction) range
 
 	if a:direction == 'b'
 		execute "normal ?" . l:pattern . "^M"
-	elseif a:direction == 'gv'
-		call CmdLine("Ack " . l:pattern )
 	elseif a:direction == 'f'
 		execute "normal /" . l:pattern . "^M"
 	endif
@@ -104,43 +96,15 @@ function! Selection(direction) range
 	let @" = l:saved_reg
 endfunction
 
-function! CmdLine(str)
-    execute "menu Foo.Bar :" . a:str
-    emenu Foo.Bar
-    unmenu Foo
-endfunction
-
 vnoremap * :call Selection('f')<CR>
 vnoremap # :call Selection('b')<CR>
-" When you press gv you vimgrep after the selected text
-vnoremap gv :call Selection('gv')<CR>
-
-
-
-
-
-nnoremap <leader>t :NERDTreeToggle<CR>
-nnoremap <leader>n :NERDTreeFind<CR>
-nnoremap <leader>m :make<CR>
-nnoremap <leader>cp :CPPaste<CR>
-
-inoremap jj <Esc>
-nnoremap <C-c> <Esc>
-nnoremap ; :
-vnoremap ; :
-
-
-
-
-
-
-
-
-
-
-
-
-
+" NERDTree
+nnoremap <silent> <BS> :NERDTreeToggle<CR>
+" nnoremap <S-BS> :NERDTreeFind<CR>
+" UltiSnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 "
 " CamelCase complete
@@ -298,13 +262,18 @@ set autoread
 set linebreak
 set ignorecase
 set smartcase
+set lazyredraw
+" TODO: Make as unicode
 set listchars=tab:▸\ ,eol:¬,trail:·
 set fillchars=vert:│
 set wmh=0
 set clipboard=unnamed
 set shell=/bin/bash
+set timeoutlen=500
+set grepprg=ack
 let NERDTreeMinimalUI=1
-
+let NERDTreeChDirMode=2
+let NERDTreeQuitOnOpen=1
 
 "autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 
@@ -314,6 +283,11 @@ set shiftwidth=4
 set softtabstop=4
 set autoindent
 set smartindent
+
+" Language
+set keymap=russian-jcukenwin
+set iminsert=0
+set imsearch=0
 
 " Statusbar
 set laststatus=1
@@ -361,16 +335,7 @@ nmap <F6> :make -s<CR>
 nmap <F5> :!adl descriptor.xml -screensize iPhone<CR>
 nmap <S-F5> :make -s<CR><F5>
 "nmap <leader>r :!cygstart %:r.swf<cr>:!tail -f "C:\Users\malig_000\AppData\Roaming\Macromedia\Flash Player\Logs\flashlog.txt"<cr>
-set wildignore=*.swc,*.swf,ctags,*.apk
+set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws
 
 nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
-
-"
-" Lang settings
-"
-set keymap=russian-jcukenwin
-set iminsert=0
-set imsearch=0
-
-nnoremap <s-k> :silent execute ':!cygstart http://www.google.com/?hl=ru\&q='.expand("<cword>").'\&btnI=Search'<CR>
 
