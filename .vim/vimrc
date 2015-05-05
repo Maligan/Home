@@ -16,6 +16,8 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'tommcdo/vim-exchange'
 Bundle 'sirver/ultisnips'
+Bundle 'jiangmiao/auto-pairs'
+Bundle 'terryma/vim-expand-region'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-unimpaired'
@@ -30,10 +32,10 @@ let mapleader=","
 
 " Open .vimrc
 nnoremap <silent> <leader>v :e $MYVIMRC<CR>
-" Recursive search in current directory for matches with current word
-nnoremap <leader>f :<C-u>execute "Ack " . expand("<cword>") <Bar> cw<CR>
+" Fix same issues with <C-c>
+nnoremap <C-c> <Esc>
 " Shortcut for :%s//
-nnoremap <leader>s :<C-u>%s//g<left><left>
+nnoremap <leader>s :%s//g<left><left>
 vnoremap <leader>s :s//g<left><left>
 " Toggle search highlight
 nnoremap <silent> <leader>/ :set hlsearch!<CR>
@@ -44,15 +46,6 @@ nnoremap <silent> <leader>w :set list!<CR>
 " Boosted command prompt call
 nnoremap ; :
 vnoremap ; :
-" Fix same issues with <C-c>
-nnoremap <C-c> <Esc>
-" Auto complete {} indent and position the cursor in the middle line
-"inoremap {<CR> {<CR>}<Esc>O
-"inoremap (<CR> (<CR>)<Esc>O
-"inoremap [<CR> [<CR>]<Esc>O
-
-inoremap ( ()<left>
-
 
 " Switch splits
 nnoremap <C-h> <C-W>h
@@ -100,7 +93,6 @@ vnoremap * :call Selection('f')<CR>
 vnoremap # :call Selection('b')<CR>
 " NERDTree
 nnoremap <silent> <BS> :NERDTreeToggle<CR>
-" nnoremap <S-BS> :NERDTreeFind<CR>
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
@@ -134,6 +126,12 @@ function! TagCamelCompleteFunction(findstart, base)
     endif
 endfunction
 
+autocmd FileType *
+    \ if &omnifunc != '' |
+    \   call SuperTabChain(&omnifunc, "<c-p>") |
+    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
+    \ endif
+
 set omnifunc=TagCamelCompleteFunction
 set completeopt=menuone
 
@@ -145,16 +143,20 @@ autocmd BufWritePost *
 	\   call system('ctags -a '.expand('%')) |
 	\ endif
 
-autocmd FileType *
-    \ if &omnifunc != '' |
-    \   call SuperTabChain(&omnifunc, "<c-p>") |
-    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
-    \ endif
-
 "
 " Terminal
 "
+" File encoding
+if has("multi_byte")
+	set encoding=utf-8
+	if &termencoding == ""
+		let &termencoding = &encoding
+	endif
+	setglobal fileencoding=utf-8
+	set fileencodings=ucs-bom,utf-8,latin1
+endif
 " Mode based cursor
+
 if &term =~ '^xterm'
 	" remove defalult identificatoin
 	set noshowmode
@@ -169,6 +171,10 @@ let &t_ti.="\e[?7727h"
 let &t_te.="\e[?7727l"
 noremap <Esc>O[ <Esc>
 noremap! <Esc>O[ <Esc>
+
+" Toggle cursor color (TODO: Make lang-based color)
+nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>:redraw!<CR>
+nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>:redraw!<CR>
 
 "
 " Auto source .vimrc
@@ -228,26 +234,6 @@ endif
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-if has("multi_byte")
-	set encoding=utf-8
-	if &termencoding == ""
-		let &termencoding = &encoding
-	endif
-	setglobal fileencoding=utf-8
-	set fileencodings=ucs-bom,utf-8,latin1
-endif
-
 " Behaviors
 set title
 set shortmess+=I
@@ -291,7 +277,7 @@ set imsearch=0
 
 " Statusbar
 set laststatus=1
-set showmode
+set noshowmode
 set showcmd
 set noruler
 
@@ -309,23 +295,6 @@ syntax on
 set numberwidth=4
 
 
-
-
-
-"
-" Toggle cursor color
-"
-
-"silent !echo -ne "\e]12;220,50,47\a"
-"silent !echo -ne "\e]12;38,139,210\a"
-"imap <F12> <C-O>:silent call ToggleLanguage()<CR>
-nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>:redraw!<CR>
-nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>:redraw!<CR>
-"silent !echo -ne "\e]12;220,50,47\a"
-"silent !echo -ne "\e]12;38,139,210\a"
-"imap <F12> <C-O>:silent call ToggleLanguage()<CR>
-"nmap <silent> <c-l> :call Temp()<CR>
-
 "
 " ActionScriptCompiler
 "
@@ -335,7 +304,7 @@ nmap <F6> :make -s<CR>
 nmap <F5> :!adl descriptor.xml -screensize iPhone<CR>
 nmap <S-F5> :make -s<CR><F5>
 "nmap <leader>r :!cygstart %:r.swf<cr>:!tail -f "C:\Users\malig_000\AppData\Roaming\Macromedia\Flash Player\Logs\flashlog.txt"<cr>
-set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws
+set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,*.jpg
 
 nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
 
