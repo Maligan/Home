@@ -53,10 +53,10 @@ nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
 " Navigate with <Ctrl>-hjkl in Insert mode
-inoremap <C-h> <C-o>h
-inoremap <C-j> <C-o>j
-inoremap <C-k> <C-o>k
-inoremap <C-l> <C-o>l
+inoremap <C-h> <left>
+inoremap <C-j> <down>
+inoremap <C-k> <up>
+inoremap <C-l> <right>
 " Reselect area after change indent
 vnoremap < <gv
 vnoremap > >gv
@@ -166,11 +166,11 @@ if &term =~ '^xterm'
 	let &t_EI .= "\e[1 q"
 endif
 
-" Avoiding escape timeout issues in mintty
-let &t_ti.="\e[?7727h"
-let &t_te.="\e[?7727l"
-noremap <Esc>O[ <Esc>
-noremap! <Esc>O[ <Esc>
+" Avoiding escape timeout issues in mintty ()
+"let &t_ti.="\e[?7727h"
+"let &t_te.="\e[?7727l"
+"noremap <Esc>O[ <Esc>
+"noremap! <Esc>O[ <Esc>
 
 " Toggle cursor color (TODO: Make lang-based color)
 nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>:redraw!<CR>
@@ -183,8 +183,6 @@ if has("autocmd")
 	autocmd! BufWritePost .vimrc 
 	autocmd BufWritePost .vimrc source $MYVIMRC
 endif
-
-
 
 
 
