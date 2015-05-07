@@ -37,8 +37,6 @@ nnoremap <C-c> <Esc>
 " Shortcut for :%s//
 nnoremap <leader>s :%s//g<left><left>
 vnoremap <leader>s :s//g<left><left>
-" Toggle search highlight
-nnoremap <silent> <leader>/ :set hlsearch!<CR>
 " Y from cursor position to the end of line
 nnoremap Y y$
 " Toggle whitespaces
@@ -46,8 +44,22 @@ nnoremap <silent> <leader>w :set list!<CR>
 " Boosted command prompt call
 nnoremap ; :
 vnoremap ; :
+" Do not jump after *, toggle hls with *
+nnoremap <silent> <leader>/ :set hls!<CR>
+nnoremap <silent> *  :call Search('\<<C-R>=expand("<cword>")<CR>\>')<CR>
+vnoremap <silent> * y:call Search('<C-r>0')<CR>
 
-" Switch splits
+function! Search(text)
+	if (a:text != @/)
+		call histadd("search", a:text)
+		let @/ = a:text
+		set hlsearch
+	else
+		set hlsearch!
+	endif
+endfunction
+
+" Windows movement with <Ctrl>-hjkl
 nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
@@ -71,26 +83,6 @@ vmap  [egv
 nnoremap <leader>rr :%s/\<<C-r><C-w>\>//g<left><left>
 nnoremap <leader>rb :bufdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 nnoremap <leader>ra :argdo %s/\<<C-r><C-w>\>//ge<left><left><left>
-" Visual mode pressing *  # searches for the current selection (from an idea by Michael Naumann)
-function! Selection(direction) range
-	let l:saved_reg = @"
-	execute "normal! vgvy"
-
-	let l:pattern = escape(@", '\\/.*$^~[]')
-	let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-	if a:direction == 'b'
-		execute "normal ?" . l:pattern . "^M"
-	elseif a:direction == 'f'
-		execute "normal /" . l:pattern . "^M"
-	endif
-
-	let @/ = l:pattern
-	let @" = l:saved_reg
-endfunction
-
-vnoremap * :call Selection('f')<CR>
-vnoremap # :call Selection('b')<CR>
 " NERDTree
 nnoremap <silent> <BS> :NERDTreeToggle<CR>
 " UltiSnips
@@ -113,7 +105,7 @@ function! TagCamelCompleteFunction(findstart, base)
         endwhile
         return start
     else
-		" Define camel-pattren
+		" Define camel-pattern
 		let pattern = '\v\C^' . join(split(a:base, '\u\&'), '[A-Za-z_\d]*')
 
 		" Fetch 'name' field from tags
