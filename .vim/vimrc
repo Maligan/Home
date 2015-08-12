@@ -17,6 +17,7 @@ Bundle 'milkypostman/vim-togglelist'
 Bundle 'tommcdo/vim-exchange'
 Bundle 'sirver/ultisnips'
 Bundle 'jiangmiao/auto-pairs'
+Bundle 'godlygeek/tabular'
 Bundle 'terryma/vim-expand-region'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
@@ -57,6 +58,8 @@ function! Search(text)
 	else
 		set hlsearch!
 	endif
+	" There is small bug: hls not applied from functions - fix it!
+	redraw
 endfunction
 
 " Windows movement with <Ctrl>-hjkl
@@ -89,43 +92,43 @@ nnoremap <silent> <BS> :NERDTreeToggle<CR>
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+" SuperTab
+let g:SuperTabMappingBackward = '<c-@>'
+let g:SuperTabMappingForward = ''
 
 "
 " CamelCase complete
 "
-let g:SuperTabMappingBackward = '<c-@>'
-let g:SuperTabMappingForward = ''
+"function! TagCamelCompleteFunction(findstart, base)
+    "if a:findstart
+        "let line = getline('.')
+        "let start = col('.') - 1
+        "while start > 0 && line[start - 1] =~ '[A-Za-z_]'
+            "let start -= 1
+        "endwhile
+        "return start
+    "else
+		"" Define camel-pattern
+		"let pattern = '\v\C^' . join(split(a:base, '\u\&'), '[A-Za-z_\d]*')
 
-function! TagCamelCompleteFunction(findstart, base)
-    if a:findstart
-        let line = getline('.')
-        let start = col('.') - 1
-        while start > 0 && line[start - 1] =~ '[A-Za-z_]'
-            let start -= 1
-        endwhile
-        return start
-    else
-		" Define camel-pattern
-		let pattern = '\v\C^' . join(split(a:base, '\u\&'), '[A-Za-z_\d]*')
+		"" Fetch 'name' field from tags
+		"let matches = []
+		"for entry in taglist(pattern) 
+			"call add(matches, entry['name'])
+		"endfor
 
-		" Fetch 'name' field from tags
-		let matches = []
-		for entry in taglist(pattern) 
-			call add(matches, entry['name'])
-		endfor
+		"return matches
+    "endif
+"endfunction
 
-		return matches
-    endif
-endfunction
+"autocmd FileType *
+    "\ if &omnifunc != '' |
+    "\   call SuperTabChain(&omnifunc, "<c-p>") |
+    "\   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
+    "\ endif
 
-autocmd FileType *
-    \ if &omnifunc != '' |
-    \   call SuperTabChain(&omnifunc, "<c-p>") |
-    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
-    \ endif
-
-set omnifunc=TagCamelCompleteFunction
-set completeopt=menuone
+"set omnifunc=TagCamelCompleteFunction
+"set completeopt=menuone
 
 "
 " Auto ctags
@@ -147,8 +150,8 @@ if has("multi_byte")
 	setglobal fileencoding=utf-8
 	set fileencodings=ucs-bom,utf-8,latin1
 endif
-" Mode based cursor
 
+" Mode based cursor
 if &term =~ '^xterm'
 	" remove defalult identificatoin
 	set noshowmode
@@ -165,8 +168,10 @@ endif
 "noremap! <Esc>O[ <Esc>
 
 " Toggle cursor color (TODO: Make lang-based color)
-nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>:redraw!<CR>
-nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>:redraw!<CR>
+nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>
+":redraw!<CR>
+nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>
+":redraw!<CR>
 
 "
 " Auto source .vimrc
@@ -297,4 +302,3 @@ nmap <S-F5> :make -s<CR><F5>
 set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,*.jpg
 
 nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
-
