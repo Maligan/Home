@@ -45,7 +45,7 @@ nnoremap <silent> <leader>w :set list!<CR>
 " Boosted command prompt call
 nnoremap ; :
 vnoremap ; :
-" Do not jump after *, toggle hls with *
+" Do not jump after *, smart toggle hls with *
 nnoremap <silent> <leader>/ :set hls!<CR>
 nnoremap <silent> *  :call Search('\<<C-R>=expand("<cword>")<CR>\>')<CR>
 vnoremap <silent> * y:call Search('<C-r>0')<CR>
@@ -97,48 +97,6 @@ let g:SuperTabMappingBackward = '<c-@>'
 let g:SuperTabMappingForward = ''
 
 "
-" CamelCase complete
-"
-"function! TagCamelCompleteFunction(findstart, base)
-    "if a:findstart
-        "let line = getline('.')
-        "let start = col('.') - 1
-        "while start > 0 && line[start - 1] =~ '[A-Za-z_]'
-            "let start -= 1
-        "endwhile
-        "return start
-    "else
-		"" Define camel-pattern
-		"let pattern = '\v\C^' . join(split(a:base, '\u\&'), '[A-Za-z_\d]*')
-
-		"" Fetch 'name' field from tags
-		"let matches = []
-		"for entry in taglist(pattern) 
-			"call add(matches, entry['name'])
-		"endfor
-
-		"return matches
-    "endif
-"endfunction
-
-"autocmd FileType *
-    "\ if &omnifunc != '' |
-    "\   call SuperTabChain(&omnifunc, "<c-p>") |
-    "\   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
-    "\ endif
-
-"set omnifunc=TagCamelCompleteFunction
-"set completeopt=menuone
-
-"
-" Auto ctags
-"
-autocmd BufWritePost *
-	\ if filereadable('tags') |
-	\   call system('ctags -a '.expand('%')) |
-	\ endif
-
-"
 " Terminal
 "
 " File encoding
@@ -161,26 +119,20 @@ if &term =~ '^xterm'
 	let &t_EI .= "\e[1 q"
 endif
 
-" Avoiding escape timeout issues in mintty ()
-"let &t_ti.="\e[?7727h"
-"let &t_te.="\e[?7727l"
-"noremap <Esc>O[ <Esc>
-"noremap! <Esc>O[ <Esc>
-
-" Toggle cursor color (TODO: Make lang-based color)
-nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>
-":redraw!<CR>
-nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>
-":redraw!<CR>
-
+"
+" Autocommand
 "
 " Auto source .vimrc
-"
 if has("autocmd")
 	autocmd! BufWritePost .vimrc 
 	autocmd BufWritePost .vimrc source $MYVIMRC
-endif
 
+	" Auto ctags
+	autocmd BufWritePost *
+		\ if filereadable('tags') |
+		\   call system('ctags -a '.expand('%')) |
+		\ endif
+endif
 
 
 
@@ -302,3 +254,47 @@ nmap <S-F5> :make -s<CR><F5>
 set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,*.jpg
 
 nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
+
+" Avoiding escape timeout issues in mintty ()
+"let &t_ti.="\e[?7727h"
+"let &t_te.="\e[?7727l"
+"noremap <Esc>O[ <Esc>
+"noremap! <Esc>O[ <Esc>
+
+" Toggle cursor color (TODO: Make lang-based color)
+"nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>:redraw!<CR>
+"nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>:redraw!<CR>
+
+"
+" CamelCase complete
+"
+"function! TagCamelCompleteFunction(findstart, base)
+    "if a:findstart
+        "let line = getline('.')
+        "let start = col('.') - 1
+        "while start > 0 && line[start - 1] =~ '[A-Za-z_]'
+            "let start -= 1
+        "endwhile
+        "return start
+    "else
+		"" Define camel-pattern
+		"let pattern = '\v\C^' . join(split(a:base, '\u\&'), '[A-Za-z_\d]*')
+
+		"" Fetch 'name' field from tags
+		"let matches = []
+		"for entry in taglist(pattern) 
+			"call add(matches, entry['name'])
+		"endfor
+
+		"return matches
+    "endif
+"endfunction
+
+"autocmd FileType *
+    "\ if &omnifunc != '' |
+    "\   call SuperTabChain(&omnifunc, "<c-p>") |
+    "\   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
+    "\ endif
+
+"set omnifunc=TagCamelCompleteFunction
+"set completeopt=menuone
