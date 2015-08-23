@@ -6,12 +6,11 @@
 	diff = true
 	status = true
 [alias]
-	ch = checkout
 	dt = difftool
 	br = branch
 	st = status
 	co = checkout
-	ci = commit
+	cm = commit
 	gr = log --oneline --graph
 	unstage = reset HEAD --
 [core]
