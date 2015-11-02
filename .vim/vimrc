@@ -86,7 +86,7 @@ nnoremap <leader>rr :%s/\<<C-r><C-w>\>//g<left><left>
 nnoremap <leader>rb :bufdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 nnoremap <leader>ra :argdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 " NERDTree
-nnoremap <silent> <BS> :NERDTreeToggle<CR>
+nnoremap <silent> <C-\> :NERDTreeToggle<CR>
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
@@ -118,6 +118,11 @@ if &term =~ '^xterm'
 	let &t_EI .= "\e[1 q"
 endif
 
+if &term =~ '^xterm'
+	" allow drag
+	set ttymouse=xterm2
+endif
+
 "
 " Autocommand
 "
@@ -125,6 +130,9 @@ endif
 if has("autocmd")
 	autocmd! BufWritePost .vimrc 
 	autocmd BufWritePost .vimrc source $MYVIMRC
+
+	" If doing a diff. Upon writing changes to file, automatically update the differences
+	autocmd BufWritePost * if &diff == 1 | diffupdate | endif
 
 	" Auto ctags
 	autocmd BufWritePost *
@@ -136,8 +144,7 @@ if has("autocmd")
 	"autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 endif
 
-
-
+command! FormatJSON :%!python -m json.tool
 
 
 

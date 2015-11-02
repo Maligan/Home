@@ -142,6 +142,7 @@ alias cls='echo -ne "\ec\e[3J"'
 alias vi=vim
 alias grep=ack
 alias screen='screen -T $TERM -s $SHELL $*'
+alias find=/bin/find
 eval `dircolors -b ~/.dir_colors`
 
 #
