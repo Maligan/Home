@@ -24,6 +24,7 @@ Bundle 'tpope/vim-unimpaired'
 Bundle 'tpope/vim-repeat'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
+Bundle 'rstacruz/sparkup'
 
 "
 " Shortcuts
@@ -86,7 +87,7 @@ nnoremap <leader>rr :%s/\<<C-r><C-w>\>//g<left><left>
 nnoremap <leader>rb :bufdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 nnoremap <leader>ra :argdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 " NERDTree
-nnoremap <silent> <BS> :NERDTreeToggle<CR>
+nnoremap <silent> <C-\> :NERDTreeToggle<CR>
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
@@ -209,6 +210,11 @@ set background=dark
 colorscheme solarized
 
 " Behaviors
+
+" http://www.johnhawthorn.com/2012/09/vi-escape-delays/
+set timeoutlen=500
+set ttimeoutlen=0
+
 set title
 set shortmess+=I
 set hidden
@@ -229,7 +235,6 @@ set fillchars=vert:│
 set wmh=0
 set clipboard=unnamed
 set shell=/bin/bash
-set timeoutlen=500
 set grepprg=ack
 set incsearch
 set nowrap
@@ -237,6 +242,7 @@ set number
 syntax on
 set numberwidth=4
 set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,*.jpg
+
 let NERDTreeMinimalUI=1
 let NERDTreeChDirMode=2
 let NERDTreeQuitOnOpen=1
