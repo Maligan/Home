@@ -24,7 +24,7 @@ Bundle 'tpope/vim-unimpaired'
 Bundle 'tpope/vim-repeat'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'rstacruz/sparkup'
+Bundle 'easymotion/vim-easymotion'
 
 "
 " Shortcuts
@@ -86,8 +86,12 @@ vmap  [egv
 nnoremap <leader>rr :%s/\<<C-r><C-w>\>//g<left><left>
 nnoremap <leader>rb :bufdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 nnoremap <leader>ra :argdo %s/\<<C-r><C-w>\>//ge<left><left><left>
-" NERDTree
+" Easy Motion
+nmap  <Plug>(easymotion-s)
+vmap  <Plug>(easymotion-s)
+" NERDTree Ctrl+\ & Ctrl+Shift+\
 nnoremap <silent> <C-\> :NERDTreeToggle<CR>
+nnoremap <silent> 	:NERDTreeFind<CR>
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
@@ -204,10 +208,11 @@ set showcmd
 set noruler
 
 " Colors
-let g:solarized_termtrans=1
-let g:solarized_style="dark"
 set background=dark
-colorscheme solarized
+"let g:solarized_termtrans=1
+"let g:solarized_style="dark"
+"colorscheme solarized
+colorscheme ir_black
 
 " Behaviors
 
@@ -246,6 +251,8 @@ set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,
 let NERDTreeMinimalUI=1
 let NERDTreeChDirMode=2
 let NERDTreeQuitOnOpen=1
+
+nnoremap <leader>m :make %<CR>
 
 
 " Syntax helper

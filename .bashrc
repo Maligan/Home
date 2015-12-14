@@ -143,7 +143,7 @@ alias vi=vim
 alias grep=ack
 alias screen='screen -T $TERM -s $SHELL $*'
 alias find=/bin/find
-eval `dircolors -b ~/.dir_colors`
+#eval `dircolors -b ~/.dir_colors`
 
 #
 # Some shortcuts for different directory listings
