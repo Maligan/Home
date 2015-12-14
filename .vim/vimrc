@@ -113,20 +113,37 @@ if has("multi_byte")
 	set fileencodings=ucs-bom,utf-8,latin1
 endif
 
-" Mode based cursor
+" Mode based cursor & mouse support
 if &term =~ '^xterm'
 	" remove defalult identificatoin
 	set noshowmode
 	" solid underscore
-	let &t_SI .= "\e[5 q"
+	let &t_SI = "\e[5 q"
 	" solid block
-	let &t_EI .= "\e[1 q"
-endif
-
-if &term =~ '^xterm'
+	let &t_EI = "\e[1 q"
 	" allow drag
 	set ttymouse=xterm2
 endif
+
+" Dirty hack witch allow call terminal escape sequence
+function! SendEscapeSequence(sequence)
+	if &term =~ '^xterm'
+		" save original values
+		let o_t_SI = &t_SI
+		let o_t_EI = &t_EI
+
+		" replace vim variable to sequence
+		let &t_SI = a:sequence
+		let &t_EI = a:sequence
+
+		" change mode and return it back
+		normal a
+		
+		" restore values
+		let &t_SI = o_t_SI
+		let &t_EI = o_t_EI
+	endif
+endfunction
 
 "
 " Autocommand
@@ -144,18 +161,10 @@ if has("autocmd")
 		\ if filereadable('tags') |
 		\   call system('ctags -a '.expand('%')) |
 		\ endif
-
-	" Auto format XML files
-	"autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 endif
 
 command! FormatJSON :%!python -m json.tool
-
-
-
-
-
-
+command! FormatXML :%!xmllint --format --recover - 2>/dev/null"
 
 
 
@@ -248,6 +257,9 @@ syntax on
 set numberwidth=4
 set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,*.jpg
 
+" http://vim.wikia.com/wiki/Show_a_useful_title_on_exit_in_an_xterm
+let &titleold=getcwd()
+
 let NERDTreeMinimalUI=1
 let NERDTreeChDirMode=2
 let NERDTreeQuitOnOpen=1
@@ -258,15 +270,20 @@ nnoremap <leader>m :make %<CR>
 " Syntax helper
 "nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
 
-" Avoiding escape timeout issues in mintty ()
-"let &t_ti.="\e[?7727h"
-"let &t_te.="\e[?7727l"
-"noremap <esc>o[ <esc>
-"noremap! <esc>o[ <esc>
-
 " Toggle cursor color (TODO: Make lang-based color)
 "nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>:redraw!<CR>
 "nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>:redraw!<CR>
+
+"nmap <leader>r :silent! call SendEscapeSequence("\e]12;220,50,47\x7")<CR>
+"nmap <leader>b :silent! call SendEscapeSequence("\e]12;38,139,210\x7")<CR>
+
+function! ToggleLanguage()
+	let &iminsert = &iminsert > 0 ? 0 : 1
+	call SendEscapeSequence(&iminsert > 0 ? "\e]12;135,175,215\x7" : "\e]12;255,175,0\x7")
+endfunction
+
+nmap <silent> <c-l> :call ToggleLanguage()<CR>
+imap <silent> <c-l> :call ToggleLanguage()<CR>
 
 "
 " CamelCase complete
