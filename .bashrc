@@ -143,7 +143,16 @@ alias vi=vim
 alias grep=ack
 alias screen='screen -T $TERM -s $SHELL $*'
 alias find=/bin/find
+alias sort=/bin/sort
 #eval `dircolors -b ~/.dir_colors`
+
+function swap()         
+{
+    local TMPFILE=tmp.$$
+    mv "$1" $TMPFILE
+    mv "$2" "$1"
+    mv $TMPFILE "$2"
+}
 
 #
 # Some shortcuts for different directory listings
