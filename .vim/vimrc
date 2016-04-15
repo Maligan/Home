@@ -277,7 +277,6 @@ function! ToggleLanguage()
 	call SendEscapeSequence(&iminsert > 0 ? "\e]12;135,175,215\x7" : "\e]12;255,175,0\x7")
 endfunction
 
-nmap <silent> <c-l> :call ToggleLanguage()<CR>
 imap <silent> <c-l> :call ToggleLanguage()<CR>
 
 autocmd VimLeave * call SendEscapeSequence("\e]12;255,175,0\x7")
