@@ -26,7 +26,8 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
-#source ~/.git-completion.bash
+source ~/.git-completion.bash
+export PATH=$PATH:~/bin
 # Shell Options
 #
 # See man bash for more options...
@@ -152,6 +153,16 @@ function swap()
     mv "$1" $TMPFILE
     mv "$2" "$1"
     mv $TMPFILE "$2"
+}
+
+function xmv()
+{
+	if [ -z "$1" ]
+	then
+		echo "Usage: $(basename $0) <regex> (/old/new/g)"
+	else
+		sed "p;s$1" | xargs -n2 mv
+	fi
 }
 
 #

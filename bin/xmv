@@ -1,7 +1,0 @@
-#!/bin/bash
-if [ -z "$1" ]
-then
-	echo "Usage: $(basename $0) <regex> (/old/new/g)"
-else
-	sed "p;s$1" | xargs -n2 mv
-fi
