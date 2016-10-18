@@ -33,6 +33,8 @@ let mapleader=","
 nnoremap <silent> <leader>v :e $MYVIMRC<CR>
 " Fix same issues with <C-c>
 nnoremap <C-c> <Esc>
+vnoremap <C-c> <Esc>
+inoremap <C-c> <Esc>
 " Shortcut for :%s//
 nnoremap <leader>s :%s//g<left><left>
 vnoremap <leader>s :s//g<left><left>
@@ -66,10 +68,10 @@ nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
 " Navigate with <Ctrl>-hjkl in Insert mode
-inoremap <C-h> <left>
-inoremap <C-j> <down>
-inoremap <C-k> <up>
-inoremap <C-l> <right>
+"inoremap <C-h> <left>
+"inoremap <C-j> <down>
+"inoremap <C-k> <up>
+"inoremap <C-l> <right>
 " Reselect area after change indent
 vnoremap < <gv
 vnoremap > >gv
@@ -265,21 +267,16 @@ nnoremap <leader>m :make %<CR>
 " Syntax helper
 "nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
 
-" Toggle cursor color (TODO: Make lang-based color)
-"nmap <leader>ctr :silent !echo -ne "\e]12;220,50,47\a"<CR>:redraw!<CR>
-"nmap <leader>ctb :silent !echo -ne "\e]12;38,139,210\a"<CR>:redraw!<CR>
+autocmd VimLeave * call SendEscapeSequence("\e]12;255,175,0\x7")
 
-"nmap <leader>r :silent! call SendEscapeSequence("\e]12;220,50,47\x7")<CR>
-"nmap <leader>b :silent! call SendEscapeSequence("\e]12;38,139,210\x7")<CR>
-
-function! ToggleLanguage()
+function! ToggleIminsert()
 	let &iminsert = &iminsert > 0 ? 0 : 1
 	call SendEscapeSequence(&iminsert > 0 ? "\e]12;135,175,215\x7" : "\e]12;255,175,0\x7")
 endfunction
 
-imap <silent> <c-l> :call ToggleLanguage()<CR>
-
-autocmd VimLeave * call SendEscapeSequence("\e]12;255,175,0\x7")
+inoremap <silent>  <C-O>:call ToggleIminsert()<CR>
+nnoremap <silent>  :call ToggleIminsert()<CR>
+"cnoremap <silent> <expr>  &cedit . ':call ToggleIminsert()<CR>' . '<C-C>' <bar> redraw!
 
 "
 " CamelCase complete
