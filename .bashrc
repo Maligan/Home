@@ -62,7 +62,7 @@ cygpath_and_git_branch () {
 	# Замена cygwin адрессов дисков
 	winpath=$(cygpath -w $@)
 	# Название текущей git-ветки
-	branch=$(git name-rev HEAD 2> /dev/null | sed "s#HEAD\ \(.*\)#\1#")
+	branch=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
 	[ $branch ] && branch=$(echo -ne "($branch)")
 
 	echo $winpath $branch
@@ -139,13 +139,15 @@ check-ssh-agent || { ssh-agent | sed 's/^echo/#echo/' > "${SSH_SOCKET}" && chmod
 # alias fgrep='fgrep --color=auto'              # show differences in colour
 
 alias mc='mc -b'
-alias cls='echo -ne "\ec\e[3J"'
-alias vi=vim
-alias grep=ack
+alias ls='ls --color=tty'
+alias open='cygstart'
+alias sudo='cygstart --action=runas'
 alias screen='screen -T $TERM -s $SHELL $*'
+alias grep=ack
+alias dn=dotnet
+alias g=git
 alias find=/bin/find
 alias sort=/bin/sort
-#eval `dircolors -b ~/.dir_colors`
 
 function swap()         
 {
@@ -159,17 +161,13 @@ function xmv()
 {
 	if [ -z "$1" ]
 	then
-		echo "Usage: $(basename $0) <regex> (/old/new/g)"
+		echo "Usage: $FUNCNAME <regex> (/old/new/g)"
 	else
 		sed "p;s$1" | xargs -n2 mv
 	fi
 }
 
-#
 # Some shortcuts for different directory listings
-alias ls='ls --color=tty'                 # classify files in colour
-alias g='git'
-alias open='cygstart'
 # alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
 # alias ll='ls -l'                              # long list

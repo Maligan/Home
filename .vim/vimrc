@@ -16,7 +16,6 @@ Bundle 'maligan/molly'
 Bundle 'milkypostman/vim-togglelist'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
-Bundle 'sirver/ultisnips'
 Bundle 'tmhedberg/matchit'
 Bundle 'tommcdo/vim-exchange'
 Bundle 'tpope/vim-fugitive'
@@ -67,11 +66,6 @@ nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
-" Navigate with <Ctrl>-hjkl in Insert mode
-"inoremap <C-h> <left>
-"inoremap <C-j> <down>
-"inoremap <C-k> <up>
-"inoremap <C-l> <right>
 " Reselect area after change indent
 vnoremap < <gv
 vnoremap > >gv
@@ -87,15 +81,10 @@ nnoremap <leader>rr :%s/\<<C-r><C-w>\>//g<left><left>
 nnoremap <leader>rb :bufdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 nnoremap <leader>ra :argdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 " Easy Motion
-nmap  <Plug>(easymotion-s)
-vmap  <Plug>(easymotion-s)
+map s <Plug>(easymotion-s)
 " NERDTree Ctrl+\ & Ctrl+Shift+\
 nnoremap <silent> <C-\> :NERDTreeToggle<CR>
 nnoremap <silent> 	:NERDTreeFind<CR>
-" UltiSnips
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " SuperTab
 let g:SuperTabMappingBackward = "<c-@>"
 let g:SuperTabMappingForward = ""
@@ -149,19 +138,17 @@ endfunction
 " Autocommand
 "
 " Auto source .vimrc
-if has("autocmd")
-	autocmd! BufWritePost .vimrc 
-	autocmd BufWritePost .vimrc source $MYVIMRC
+autocmd! BufWritePost vimrc 
+autocmd! BufWritePost vimrc source $MYVIMRC
 
-	" If doing a diff. Upon writing changes to file, automatically update the differences
-	autocmd BufWritePost * if &diff == 1 | diffupdate | endif
+" If doing a diff. Upon writing changes to file, automatically update the differences
+" autocmd BufWritePost * if &diff == 1 | diffupdate | endif
 
-	" Auto ctags
-	autocmd BufWritePost *
-		\ if filereadable('tags') |
-		\   call system('ctags -a '.expand('%')) |
-		\ endif
-endif
+" Auto ctags
+" autocmd BufWritePost *
+"	\ if filereadable('tags') |
+"	\   call system('ctags -a '.expand('%')) |
+"	\ endif
 
 command! FormatJSON :%!python -m json.tool
 command! FormatXML :%!xmllint --format --recover - 2>/dev/null"
@@ -226,6 +213,7 @@ colorscheme ir_black
 set timeoutlen=500
 set ttimeoutlen=0
 
+set visualbell
 set title
 set shortmess+=I
 set hidden
@@ -253,6 +241,7 @@ set number
 syntax on
 set numberwidth=4
 set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,*.jpg
+set whichwrap+=<,>,h,l,[,]
 
 " http://vim.wikia.com/wiki/Show_a_useful_title_on_exit_in_an_xterm
 let &titleold=getcwd()
@@ -263,6 +252,7 @@ let NERDTreeQuitOnOpen=1
 
 nnoremap <leader>m :make %<CR>
 
+au BufNewFile,BufRead *.tml set filetype=xml
 
 " Syntax helper
 "nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
@@ -274,9 +264,11 @@ function! ToggleIminsert()
 	call SendEscapeSequence(&iminsert > 0 ? "\e]12;135,175,215\x7" : "\e]12;255,175,0\x7")
 endfunction
 
-inoremap <silent>  <C-O>:call ToggleIminsert()<CR>
-nnoremap <silent>  :call ToggleIminsert()<CR>
-"cnoremap <silent> <expr>  &cedit . ':call ToggleIminsert()<CR>' . '<C-C>' <bar> redraw!
+"inoremap <silent>  <C-O>:call ToggleIminsert()<CR>
+"nnoremap <silent>  :call ToggleIminsert()<CR>
+
+inoremap <silent>  <C-O>:call ToggleIminsert()<CR>
+nnoremap <silent>  :call ToggleIminsert()<CR>
 
 "
 " CamelCase complete
