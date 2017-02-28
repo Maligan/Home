@@ -148,6 +148,9 @@ alias dn=dotnet
 alias g=git
 alias find=/bin/find
 alias sort=/bin/sort
+alias dn=dotnet
+alias mklink='cmd /c mklink'
+#eval `dircolors -b ~/.dir_colors`
 
 function swap()         
 {
