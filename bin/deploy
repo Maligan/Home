@@ -1,102 +1,79 @@
 #!/bin/sh
 
-CONFIG=.deploy
-VERSION=0.1
-DRY=
+CONFIG_FILE=".deploy"
+OPTIONS="--delete -irc"
 
-version() { 
-	echo "`basename $0` v$VERSION"
+task_id=()
+task_group=()
+task_option=()
+task_source=()
+task_dest=()
+
+function help() {
+	echo "Usage: '$0' [OPTIONS] [TARGET@]GROUP"
+	echo "  -h        show this help"
+	echo "  -f [FILE] use specified config file"
+	echo "  -n        perform dry-run"
+	exit 0
 }
 
-header() {
-	echo "$@"
-}
-
-usage() {
-	echo "Usage: `basename $0` [OPTION]..."
-	echo "Source '$CONFIG' script, sync files from current machine to server."
-	echo
-	echo "Options:"
-	echo "    -n               preform a dry-run"
-	echo "    -h               show this help"
-	echo "    -v VERSION       set swf file version"
-}
-
-abort() {
-	test "$@" && echo "$@"
+function throw() {
+	echo -e '\033[0;31m'$1'\033[0m'
 	exit 1
 }
 
-config_variable_check() {
-	var_name=$1
-	var_value=${!var_name}
-	test "$var_value" || abort "Config '$CONFIG' variable $var_name is not defined."
+function taskparse() {
+	let task_number=0
+	let line_number=0
+
+	while read line
+	do
+		let line_number+=1
+		if [[ $line =~ ^([[:alnum:]]+)@([[:alnum:]]+)[[:blank:]]+\((.*)[[:blank:]]-\>[[:blank:]](.*)\)$ ]]; then
+			let task_number+=1
+			task_id[$task_number]=${BASH_REMATCH[1]}
+			task_group[$task_number]=${BASH_REMATCH[2]}
+			task_source[$task_number]=${BASH_REMATCH[3]}
+			task_dest[$task_number]=${BASH_REMATCH[4]}
+		elif [[ $line =~ ([+-])[[:blank:]]+(.+) ]] && [[ $task_number ]]; then
+			mode=${BASH_REMATCH[1]}
+			pattern=${BASH_REMATCH[2]}
+			if [[ $mode == "+" ]]; then option="--include"
+			else option="--exclude"; fi
+			task_option[$task_number]+="$option '$pattern' "
+		elif [[ $line ]]; then
+			throw "SYNTAX: $CONFIG_FILE ($line_number): $line"
+		fi
+	done < $CONFIG_FILE
 }
 
-config() {
-	test -f $CONFIG	|| abort "Config '$CONFIG' not found."
-
-	# Ignore rsync --include-from elements from config
-	alias -- -=#
-	alias -- +=#
-	source ./$CONFIG || abort "Config '$CONFIG' eval error."
-	unalias -- -
-	unalias -- +
-
-	config_variable_check "SSH_HOST"
-	config_variable_check "SSH_PATH"
-	config_variable_check "ASSET_SOURCE"
-	config_variable_check "ASSET_TARGET"
-	config_variable_check "SWF_SOURCE"
-	config_variable_check "SWF_TARGET"
-
-	ssh $SSH_HOST "test -d $SSH_PATH" || abort "Remote directory $SSH_HOST:$SSH_PATH doesn't exits."
+function taskdo() {
+	for ((i=1; i<=${#task_id[*]}; i++)); do
+		group=${task_group[$i]}
+		fullname=${task_id[$i]}@$group
+		if [[ $1 == $group ]] || [[ $1 == $fullname ]]; then
+			command="rsync $OPTIONS ${task_option[$i]} '${task_source[$i]}' ${task_dest[$i]}"
+			echo -e '\033[0;32m'$command'\033[0m'
+			eval $command
+		fi
+	done
 }
 
-rsync_count() {
-	# TODO: Check rsync error status & return -1
-	echo $(rsync -acni -e ssh $@ | sed '/\/$/d' | wc -l)
-}
 
-rsync_transfer() {
-	rsync $DRY -ac -e ssh --out-format=' * %n' $@ | sed '/\/$/d'
-}
-
-#
-# Deploy
-#
-
-# Read args
-while getopts "hnv" opt; do
+# Start
+while getopts "hnf:" opt; do
 	case $opt in
-		n) DRY=-n ;;
-		h) usage; exit ;;
+		n) OPTIONS="$OPTIONS -n" ;;
+		h) help ;;
+		f) CONFIG_FILE=$opt ;;
 		*) exit ;;
 	esac
 done
 
-# Read config
-config
+taskparse
 
-# Deploy assets
-asset_args="--include-from=$CONFIG $ASSET_SOURCE $ASSET_TARGET"
-asset_count=$(rsync_count $asset_args)
-if [[ $asset_count -ne 0 ]]; then
-	rsync_transfer $asset_args
-fi
-
-# Deploy swf
-if [[ -f $SWF_SOURCE ]]; then
-	swf_args="$SWF_SOURCE $SWF_TARGET"
-	swf_count=$(rsync_count $swf_args)
-	if [[ $swf_count -ne 0 ]]; then
-		rsync_transfer $swf_args
-	fi
-fi
-
-## Traceback
-#if [ $asset_count -eq 0 ] && [ $swf_count -eq 0 ]; then 
-	#header "Success (Updated files not being detected)"
-#else
-	#header "Success"
-#fi
+shift `expr $OPTIND - 1`
+while test $# -gt 0; do
+	taskdo $1
+	shift
+done

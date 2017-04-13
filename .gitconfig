@@ -16,6 +16,7 @@
 [core]
 	filemode = false
 	editor = vim
+	quotepath = false 
 [push]
 	default = simple
 [diff]
