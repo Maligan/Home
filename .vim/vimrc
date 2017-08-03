@@ -85,6 +85,9 @@ map s <Plug>(easymotion-s)
 " NERDTree Ctrl+\ & Ctrl+Shift+\
 nnoremap <silent> <C-\> :NERDTreeToggle<CR>
 nnoremap <silent> 	:NERDTreeFind<CR>
+let NERDTreeMinimalUI=1
+let NERDTreeChDirMode=2
+let NERDTreeQuitOnOpen=1
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
@@ -93,6 +96,10 @@ let g:UltiSnipsSnippetDirectories=["snips"]
 " SuperTab
 let g:SuperTabMappingBackward = "<c-@>"
 let g:SuperTabMappingForward = ""
+" NerdCommenter
+let g:NERDCommentEmptyLines = 1
+nnoremap <silent>  :call NERDComment(0, "toggle")<CR>
+vnoremap <silent>  :call NERDComment(0, "toggle")<CR>gv
 
 "
 " Terminal
@@ -122,17 +129,15 @@ endif
 "
 " Cursor color toogle within terminal
 "
-inoremap <c-^> :call ToggleLanguage()<CR>
+"inoremap <silent>  <C-O>:call ToggleIminsert()<CR>
+"nnoremap <silent>  :call ToggleIminsert()<CR>
 
-function! ToggleLanguage()
+function! ToggleIminsert()
 	let &iminsert = &iminsert > 0 ? 0 : 1
 	call SendEscapeSequence(&iminsert > 0 ? "\e]12;135,175,215\x7" : "\e]12;255,175,0\x7")
 endfunction
 
-" Restore original color before close vim
-if has("autocmd")
-	autocmd VimLeave * call SendEscapeSequence("\e]12;255,175,0\x7")
-endif
+autocmd VimLeave * call SendEscapeSequence("\e]12;255,175,0\x7")
 
 " Dirty hack witch allow call terminal escape sequence
 function! SendEscapeSequence(sequence)
@@ -283,29 +288,12 @@ set whichwrap+=<,>,h,l,[,]
 " http://vim.wikia.com/wiki/Show_a_useful_title_on_exit_in_an_xterm
 let &titleold=getcwd()
 
-let NERDTreeMinimalUI=1
-let NERDTreeChDirMode=2
-let NERDTreeQuitOnOpen=1
-
 nnoremap <leader>m :make %<CR>
 
 au BufNewFile,BufRead *.tml set filetype=xml
 
 " Syntax helper
 "nmap <F1> :echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
-
-autocmd VimLeave * call SendEscapeSequence("\e]12;255,175,0\x7")
-
-function! ToggleIminsert()
-	let &iminsert = &iminsert > 0 ? 0 : 1
-	call SendEscapeSequence(&iminsert > 0 ? "\e]12;135,175,215\x7" : "\e]12;255,175,0\x7")
-endfunction
-
-"inoremap <silent>  <C-O>:call ToggleIminsert()<CR>
-"nnoremap <silent>  :call ToggleIminsert()<CR>
-
-inoremap <silent>  <C-O>:call ToggleIminsert()<CR>
-nnoremap <silent>  :call ToggleIminsert()<CR>
 
 "
 " CamelCase complete
