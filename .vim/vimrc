@@ -98,6 +98,7 @@ let g:SuperTabMappingBackward = "<c-@>"
 let g:SuperTabMappingForward = ""
 " NerdCommenter
 let g:NERDCommentEmptyLines = 1
+let g:NERDDefaultAlign = 'left'
 nnoremap <silent>  :call NERDComment(0, "toggle")<CR>
 vnoremap <silent>  :call NERDComment(0, "toggle")<CR>gv
 
@@ -282,7 +283,7 @@ set nowrap
 set number
 syntax on
 set numberwidth=4
-set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,*.jpg
+set wildignore=*.swc,*.swf,tags,*.apk,*.ipr,*.iml,*.iws,*.mp3,*.wav,*.png,*.atf,*.jpg,*.meta
 set whichwrap+=<,>,h,l,[,]
 
 " http://vim.wikia.com/wiki/Show_a_useful_title_on_exit_in_an_xterm
