@@ -63,9 +63,13 @@ cygpath_and_git_branch () {
 	winpath=$(cygpath -w $@)
 	# Название текущей git-ветки
 	branch=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
-	[ $branch ] && branch=$(echo -ne "($branch)")
+	# Размер stash-а
+	stash=$(git stash list 2> /dev/null | wc -l )
 
-	echo $winpath $branch
+	[ $stash ] && [ $stash -ne '0' ] && stash='*' || stash=''
+	[ $branch ] && git=$(echo -ne "($branch$stash)")
+
+	echo $winpath $git 
 }
 
 export PS1="\$(cygpath_and_git_branch '\w') $ "
@@ -74,9 +78,9 @@ export CYGWIN=nodosfilewarning
 #
 # SSH-Agent
 #
-check-ssh-agent() { [ -S "${SSH_AUTH_SOCK}" ] && ps -ef | grep "${SSH_AGENT_PID}" | grep "ssh-agent$" > /dev/null; }
-check-ssh-agent || { export SSH_SOCKET=~/.ssh/ssh-agent.socket && [ -f "${SSH_SOCKET}" ] && . "${SSH_SOCKET}"; }
-check-ssh-agent || { ssh-agent | sed 's/^echo/#echo/' > "${SSH_SOCKET}" && chmod 600 "${SSH_SOCKET}" && . "${SSH_SOCKET}"; }
+#check-ssh-agent() { [ -S "${SSH_AUTH_SOCK}" ] && ps -ef | grep "${SSH_AGENT_PID}" | grep "ssh-agent$" > /dev/null; }
+#check-ssh-agent || { export SSH_SOCKET=~/.ssh/ssh-agent.socket && [ -f "${SSH_SOCKET}" ] && . "${SSH_SOCKET}"; }
+#check-ssh-agent || { ssh-agent | sed 's/^echo/#echo/' > "${SSH_SOCKET}" && chmod 600 "${SSH_SOCKET}" && . "${SSH_SOCKET}"; }
 
 # Completion options
 #
