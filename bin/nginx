@@ -1,0 +1,47 @@
+#!/bin/bash
+
+function stop() {
+	taskkill /f /im 'nginx*' &> /dev/null
+	taskkill /f /im 'php*' &> /dev/null
+	check-sql-off || sudo net stop mysql
+}
+
+function start() {
+	cd 'C:\Users\maligan\SDKs\nginx'
+	./php/php-cgi.exe -b 127.0.0.1:9000 -c ./php/php.ini &
+	./nginx &
+	check-sql-off && sudo net start mysql
+	disown
+}
+
+function reload() {
+	taskkill /f /im 'nginx*' &> /dev/null
+	cd 'C:\Users\maligan\SDKs\nginx'
+	./nginx &
+}
+
+function check-sql-off() {
+	[ -z $(net start | grep 'MySQL') ]
+}
+
+function sudo {
+	cygstart --action=runas "$@"
+}
+
+case "$1" in
+	start)
+		stop
+		start
+		;;
+	stop)
+		stop
+		;;
+	reload)
+		reload
+		;;
+	*)
+		echo $"Usage $0 {start|stop|reload}"
+		exit 1
+esac
+
+exit $?

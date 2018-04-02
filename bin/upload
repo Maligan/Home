@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CONFIG_FILE=".deploy"
+CONFIG_FILE=".upload"
 OPTIONS="--delete -irc"
 
 task_id=()
@@ -12,8 +12,8 @@ task_dest=()
 function help() {
 	echo "Usage: '$0' [OPTIONS] [TARGET@]GROUP"
 	echo "  -h        show this help"
-	echo "  -f [FILE] use specified config file"
 	echo "  -n        perform dry-run"
+	echo "  -f [FILE] use specified config file (default .rsync)"
 	exit 0
 }
 

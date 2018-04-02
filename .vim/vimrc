@@ -22,6 +22,9 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'sirver/ultisnips'
+
+"Plugin 'tpope/vim-dispatch'
 "Plugin 'omnisharp/omnisharp-vim'
 
 "
@@ -218,7 +221,22 @@ command! FormatXML :%!xmllint --format --recover - 2>/dev/null"
 
 
 
-
+"function! MyFoldText()
+"    let line = getline(v:foldstart)
+"
+"    let nucolwidth = &fdc + &number * &numberwidth
+"    let windowwidth = winwidth(0) - nucolwidth - 3
+"    let foldedlinecount = v:foldend - v:foldstart
+"
+"    " expand tabs into spaces
+"    let onetab = strpart('          ', 0, &tabstop)
+"    let line = substitute(line, '\t', onetab, 'g')
+"
+"    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+"    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+"    return line . ' … }' . repeat(" ",fillcharcount-2) . foldedlinecount . '…' . ' '
+"endfunction
+"set foldtext=MyFoldText()
 
 
 
