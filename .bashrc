@@ -26,7 +26,6 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
-source ~/.git-completion.bash
 export PATH=$PATH:~/bin
 # Shell Options
 #
@@ -173,6 +172,9 @@ function xmv()
 		sed "p;s$1" | xargs -n2 mv
 	fi
 }
+
+source ~/.git-completion.bash
+__git_complete g _git
 
 # Some shortcuts for different directory listings
 # alias dir='ls --color=auto --format=vertical'
