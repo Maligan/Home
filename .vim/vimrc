@@ -9,6 +9,7 @@ call vundle#rc()
 filetype plugin indent on
 
 Plugin 'vundlevim/vundle.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'tmhedberg/matchit'
@@ -19,36 +20,9 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'sirver/ultisnips'
-
-Plugin 'shougo/denite.nvim'
-
-call denite#custom#var('file/rec', 'command', ['scantree.py', '--ignore', '.git*,*.meta'])
-
-call denite#custom#option('default', 'highlight_matched_range', 'none')
-call denite#custom#option('default', 'highlight_matched_char', 'MoreMsg')
-call denite#custom#option('default', 'highlight_mode_insert', 'Search')
-call denite#custom#option('default', 'cursor_wrap', v:true)
-call denite#custom#option('default', 'prompt', '>')
-call denite#custom#option('default', 'winheight', '10')
-
-call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-
-nmap <silent> <C-P> :Denite file/rec<CR>
+Plugin 'adriaanzon/vim-emmet-ultisnips'
 
 
-"Plugin 'vim-syntastic/syntastic'
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-"
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_enable_signs=1
-
-"Plugin 'shougo/unite.vim'
 "Plugin 'maligan/molly'
 "Plugin 'tpope/vim-dispatch'
 "Plugin 'omnisharp/omnisharp-vim'
@@ -110,8 +84,6 @@ vmap  [egv
 nnoremap <leader>rr :%s/\<<C-r><C-w>\>//g<left><left>
 nnoremap <leader>rb :bufdo %s/\<<C-r><C-w>\>//ge<left><left><left>
 nnoremap <leader>ra :argdo %s/\<<C-r><C-w>\>//ge<left><left><left>
-" Easy Motion
-map s <Plug>(easymotion-s)
 " NERDTree Ctrl+\ & Ctrl+Shift+\
 nnoremap <silent> <C-\> :NERDTreeToggle<CR>
 nnoremap <silent> 	:NERDTreeFind<CR>
@@ -122,7 +94,7 @@ let NERDTreeQuitOnOpen=1
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsSnippetDirectories=["snips"]
+let g:UltiSnipsSnippetDirectories=["snips", "bundle/vim-emmet-ultisnips/UltiSnips"]
 " SuperTab
 let g:SuperTabMappingBackward = "<c-@>"
 let g:SuperTabMappingForward = ""
@@ -131,6 +103,9 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDDefaultAlign = 'left'
 nnoremap <silent>  :call NERDComment(0, "toggle")<CR>j
 vnoremap <silent>  :call NERDComment(0, "toggle")<CR>gv
+" CtrlP
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files', 'find %s -type f']
+
 
 "
 " Terminal
@@ -160,6 +135,8 @@ endif
 "
 " Cursor color toogle within terminal
 "
+imap <silent>  
+nmap <silent>  
 inoremap <silent>  <C-O>:call ToggleIminsert()<CR>
 nnoremap <silent>  :call ToggleIminsert()<CR>
 
@@ -223,7 +200,7 @@ if has("autocmd")
 		\ endif
 endif
 
-command! FormatJSON :%!python -m json.tool
+command! FormatJSON :%!python3 -m json.tool
 command! FormatXML :%!xmllint --format --recover - 2>/dev/null"
 
 
@@ -322,7 +299,7 @@ set fillchars=vert:│
 set wmh=0
 set clipboard=unnamed
 set shell=/bin/bash
-set grepprg=ack
+"set grepprg=ack
 set incsearch
 set nowrap
 set number
@@ -375,3 +352,25 @@ au BufNewFile,BufRead *.tml set filetype=xml
 
 "set omnifunc=TagCamelCompleteFunction
 "set completeopt=menuone
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe' 
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * call system(s:clip, join(v:event.regcontents, "\<CR>"))
+    augroup END
+end
+
+"noremap <silent> p :call PastePre()<CR>p
+"noremap <silent> P :call PastePre()<CR>P
+"
+"function! PastePre()
+"    let @@ = system("powershell.exe -Command Get-Clipboard")
+"endfunction
+
+ 
+
+
+"map <silent> "=p :r !powershell.exe -Command Get-Clipboard<CR>
+"map! <silent> <C-r>= :r !powershell.exe -Command Get-Clipboard<CR>

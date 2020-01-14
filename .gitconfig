@@ -12,17 +12,21 @@
 	ch = checkout
 	co = commit
 	gr = log --oneline --graph
+	fa = fetch --all --prune
 	unstage = reset HEAD --
 [core]
 	filemode = false
+	autocrlf = input
 	editor = vim
 	quotepath = false 
 [push]
 	default = simple
-[diff]
-	tool = vimdiff
 [difftool]
 	prompt = false
-
-[pull]
-	rebase = true
+[merge]
+	tool = unityyamlmerge
+[mergetool "unityyamlmerge"]
+    trustExitCode = false
+    cmd = '/mnt/c/Program Files/Unity/Hub/Editor/2019.1.5f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p "$BASE" "$REMOTE" "$LOCAL" "$MERGED"
+[mergetool]
+	keepBackup = false
